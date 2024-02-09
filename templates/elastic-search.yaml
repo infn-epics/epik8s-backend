@@ -10,7 +10,6 @@ spec:
   project: default
   source:
     repoURL: https://helm.elastic.co
-    targetRevision: 8.5.1
     chart: elastic/elasticsearch
     helm:
       parameters:
