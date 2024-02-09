@@ -13,6 +13,8 @@ spec:
     targetRevision: 8.5.1
     helm:
       values: |
+        replicas: 1
+        minimumMasterNodes: 1
         secret:
           password: "notchaos"
         securityContext:
