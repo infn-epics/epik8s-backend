@@ -1,0 +1,33 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: elastic-search
+  namespace: argocd
+  labels:
+    rootapp: {{ .Chart.Name }}
+    rootappver: {{ .Chart.Version }}
+spec:
+  project: default
+  source:
+    repoURL: https://helm.elastic.co
+    path: elastic/elasticsearch
+    targetRevision: HEAD
+    helm:
+      parameters:
+        - name: secret.password
+          value: "notchaos"
+        - name podSecurityContext : |
+          fsGroup: null
+          runAsUser: null
+        - name securityContext : |
+          runAsUser: null
+        - name sysctlInitContainer : |
+          enabled: false
+            
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: {{ .Values.namespace | quote }}
+  syncPolicy:
+    automated:
+      prune: true  # Optional: Automatically remove resources not specified in Helm chart
+      selfHeal: true
