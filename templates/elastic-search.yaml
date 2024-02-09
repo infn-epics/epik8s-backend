@@ -10,7 +10,9 @@ spec:
   project: default
   source:
     repoURL: https://helm.elastic.co
-    path: elastic/elasticsearch
+    targetRevision: "8.5.1"
+
+    path: elasticsearch
     targetRevision: HEAD
     helm:
       parameters:
