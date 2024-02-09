@@ -15,6 +15,7 @@ spec:
       values: |
         replicas: 1
         minimumMasterNodes: 1
+        antiAffinity: "soft"
         secret:
           password: "notchaos"
         securityContext:
