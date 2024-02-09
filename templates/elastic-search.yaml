@@ -11,9 +11,7 @@ spec:
   source:
     repoURL: https://helm.elastic.co
     targetRevision: 8.5.1
-
     chart: elastic/elasticsearch
-    targetRevision: HEAD
     helm:
       parameters:
         - name: secret.password
