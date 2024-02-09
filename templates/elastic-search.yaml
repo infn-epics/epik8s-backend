@@ -2,25 +2,24 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: elastic-search
-  namespace: argocd
-  labels:
-    rootapp: {{ .Chart.Name }}
-    rootappver: {{ .Chart.Version }}
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
     repoURL: https://helm.elastic.co
-    chart: elastic/elasticsearch
+    chart: elasticsearch
+    targetRevision: 8.5.1
     helm:
-      parameters:
-        - name: secret.password
-          value: "notchaos"
-        
-            
+      values: |
+        secret:
+          password: "notchaos"
+          
   destination:
-    server: 'https://kubernetes.default.svc'
+    server: https://kubernetes.default.svc
     namespace: {{ .Values.namespace | quote }}
   syncPolicy:
     automated:
-      prune: true  # Optional: Automatically remove resources not specified in Helm chart
+      prune: true
       selfHeal: true
+
