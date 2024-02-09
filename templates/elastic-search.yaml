@@ -16,13 +16,7 @@ spec:
       parameters:
         - name: secret.password
           value: "notchaos"
-        - name podSecurityContext : |
-          fsGroup: null
-          runAsUser: null
-        - name securityContext : |
-          runAsUser: null
-        - name sysctlInitContainer : |
-          enabled: false
+        
             
   destination:
     server: 'https://kubernetes.default.svc'
