@@ -43,6 +43,10 @@ spec:
             enable: false
 
         kibana:
+          ingress:
+            enabled: true
+            hostname: kibana.apps.okd-datest.lnf.infn.it
+            path: /
           serviceAccount:
             name: "default"
             create: false
