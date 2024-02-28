@@ -17,9 +17,14 @@ spec:
           kibanaEnabled: true
 
         clusterName: elastic
-        networkPolicy:
-            enabled: false
+        
         master:
+          networkPolicy:
+            enabled: false
+          ingress:
+            enabled: true
+            hostname: elasticsearch.apps.okd-datest.lnf.infn.it
+            path: /
           masterOnly: false
           replicaCount: 1
           serviceAccount:
