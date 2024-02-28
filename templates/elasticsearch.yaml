@@ -17,6 +17,8 @@ spec:
           kibanaEnabled: true
 
         clusterName: elastic
+        networkPolicy:
+            enabled: false
         master:
           masterOnly: false
           replicaCount: 1
@@ -44,6 +46,9 @@ spec:
           serviceAccount:
             name: "default"
             create: false
+          ##
+          networkPolicy:
+            enabled: false
           elasticsearch:
             host:
               - elasticsearch.backend.svc.cluster.local
