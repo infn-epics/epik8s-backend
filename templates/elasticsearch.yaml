@@ -44,6 +44,8 @@ spec:
             name: "default"
             create: false
           elasticsearch:
+            host:
+              - elasticsearch.backend.svc.cluster.local
             security:
               auth:
                 enabled: true
