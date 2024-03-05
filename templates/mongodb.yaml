@@ -1,0 +1,35 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: mongodb
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: 'registry-1.docker.io/bitnamicharts'  # Bitnami Helm repo
+    targetRevision: '14.12.3'  # Specify the version of MySQL you wish to deploy
+    chart: mongodb
+    helm:
+      values: |
+        architecture: standalone
+        replicaCount: 0
+
+        auth:
+          rootUser: "root"
+          rootPassword: "epics"
+          
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: {{ .Values.namespace | quote }}
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+      syncTimeout: 10m
+  resource:
+  customizations:
+    timeout:
+      seconds: 600
+
