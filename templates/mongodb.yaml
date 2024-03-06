@@ -15,7 +15,9 @@ spec:
       values: |
         architecture: standalone
         replicaCount: 1
-
+        serviceAccount:
+            name: "default"
+            create: false
         auth:
           enabled: false
           
