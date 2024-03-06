@@ -18,8 +18,7 @@ spec:
 
         auth:
           enabled: false
-          # rootUser: "root"
-          # rootPassword: "epics"
+          
           
   destination:
     server: https://kubernetes.default.svc
