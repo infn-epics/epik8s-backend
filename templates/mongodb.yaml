@@ -14,11 +14,12 @@ spec:
     helm:
       values: |
         architecture: standalone
-        replicaCount: 0
+        replicaCount: 1
 
         auth:
-          rootUser: "root"
-          rootPassword: "epics"
+          enabled: false
+          # rootUser: "root"
+          # rootPassword: "epics"
           
   destination:
     server: https://kubernetes.default.svc
