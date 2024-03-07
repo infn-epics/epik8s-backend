@@ -26,9 +26,6 @@ spec:
             path: /
           masterOnly: false
           replicaCount: 1
-          serviceAccount:
-            name: "default"
-            create: false
           persistence:
             size: 32Gi
         data:

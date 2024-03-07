@@ -15,13 +15,8 @@ spec:
       values: |
         architecture: standalone
         replicaCount: 1
-        serviceAccount:
-            name: "default"
-            create: false
         auth:
-          enabled: false
-          
-          
+          enabled: false       
   destination:
     server: https://kubernetes.default.svc
     namespace: {{ .Values.namespace | quote }}
