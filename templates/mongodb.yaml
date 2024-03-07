@@ -17,6 +17,8 @@ spec:
         replicaCount: 1
         auth:
           enabled: false       
+        volumePermissions:
+          enabled: true
   destination:
     server: https://kubernetes.default.svc
     namespace: {{ .Values.namespace | quote }}
