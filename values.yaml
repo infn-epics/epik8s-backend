@@ -1,6 +1,6 @@
-
 namespace: backend
 webInterfaceElastic: elasticsearch
 webInterfaceKibana: kibana
 IngressClassName: haproxy
+domain: "apps.k8s-da.lnf.infn.it"
 

@@ -22,7 +22,7 @@ spec:
           ingress:
             enabled: true
             ingressClassName: "{{ .Values.IngressClassName}}"
-            hostname: "{{ .Values.webInterfaceElastic}}.{{ .Values.domains}}"
+            hostname: "{{ .Values.webInterfaceElastic}}.{{ .Values.domain}}"
             path: /
           masterOnly: false
           replicaCount: 1
@@ -49,7 +49,7 @@ spec:
           ingress:
             enabled: true
             ingressClassName: "{{ .Values.IngressClassName}}"
-            hostname: "{{ .Values.webInterfaceKibana}}.{{ .Values.domains}}"
+            hostname: "{{ .Values.webInterfaceKibana}}.{{ .Values.domain}}"
             path: /
           serviceAccount:
             name: "default"
@@ -80,12 +80,6 @@ spec:
     automated:
       prune: true
       selfHeal: true
-      syncTimeout: 10m
     syncOptions:
       - CreateNamespace=true
-  resource:
-  customizations:
-    timeout:
-      seconds: 600
-  
 
