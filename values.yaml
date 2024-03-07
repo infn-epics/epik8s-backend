@@ -1,3 +1,6 @@
 
 namespace: backend
+webInterfaceElastic: elasticsearch
+webInterfaceKibana: kibana
+IngressClassName: haproxy
 
