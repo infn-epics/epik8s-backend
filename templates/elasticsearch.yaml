@@ -81,8 +81,11 @@ spec:
       prune: true
       selfHeal: true
       syncTimeout: 10m
+    syncOptions:
+      - CreateNamespace=true
   resource:
   customizations:
     timeout:
       seconds: 600
+  
 
