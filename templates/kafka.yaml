@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     repoURL: 'registry-1.docker.io/bitnamicharts'  # Bitnami Helm repo
-    targetRevision: '3.7.0'  # Specify the version of MySQL you wish to deploy
+    targetRevision: '>=3.6.0'  
     chart: kafka
     helm:
       values: |

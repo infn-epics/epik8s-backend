@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     repoURL: 'registry-1.docker.io/bitnamicharts'  # Bitnami Helm repo
-    targetRevision: '19.19.3'  # Specify the version of MySQL you wish to deploy
+    targetRevision: '19.19.3'  
     chart: elasticsearch
     helm:
       values: |
