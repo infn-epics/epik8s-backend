@@ -1,0 +1,36 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kafka
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: 'registry-1.docker.io/bitnamicharts'  # Bitnami Helm repo
+    targetRevision: '3.7.0'  # Specify the version of MySQL you wish to deploy
+    chart: kafka
+    helm:
+      values: |
+        architecture: standalone
+        replicaCount: 1
+        serviceAccount:
+            name: "default"
+            create: false
+        
+          
+          
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: {{ .Values.namespace | quote }}
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+      syncTimeout: 10m
+  resource:
+  customizations:
+    timeout:
+      seconds: 600
+
