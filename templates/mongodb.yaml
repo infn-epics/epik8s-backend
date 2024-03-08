@@ -20,9 +20,9 @@ spec:
         volumePermissions:
           enabled: true
         securityContext:
-          runAsUser: 1000
-          runAsGroup: 3000
-          fsGroup: 2000
+          runAsUser: 0
+          runAsGroup: 0
+          fsGroup: 0
           fsGroupChangePolicy: "OnRootMismatch"
   destination:
     server: https://kubernetes.default.svc
