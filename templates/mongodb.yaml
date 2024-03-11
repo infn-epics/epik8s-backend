@@ -17,13 +17,6 @@ spec:
         replicaCount: 1
         auth:
           enabled: false       
-        volumePermissions:
-          enabled: true
-        securityContext:
-          runAsUser: 0
-          runAsGroup: 0
-          fsGroup: 0
-          fsGroupChangePolicy: "OnRootMismatch"
   destination:
     server: https://kubernetes.default.svc
     namespace: {{ .Values.namespace | quote }}
