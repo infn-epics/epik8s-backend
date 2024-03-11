@@ -4,7 +4,7 @@ openshift:
 global:
   # -- Default domain used by all components
   ## Used for ingresses, certificates, SSO, notifications, etc.
-  domain: 212.189.145.160.myip.cloud.infn.it # argocd.example.com
+  domain: argocd.212.189.145.160.myip.cloud.infn.it # argocd.example.com
 
 
 configs:
@@ -17,9 +17,5 @@ server:
     ingressClassName: nginx
     annotations:
       nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
-      nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
-    extraTls:
-      - hosts:
-        - argocd.212.189.145.160.myip.cloud.infn.it
-        # Based on the ingress controller used secret might be optional
-        secretName: wildcard-tls
+      nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+    tls: true

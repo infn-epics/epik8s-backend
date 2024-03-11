@@ -1,12 +1,12 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: ecs-common-backend
+  name: epik8-backend
   namespace: argocd
 spec:
   project: default
   source:
-    repoURL: 'https://baltig.infn.it/lnf-da-control/ecs-k8s-backend.git'
+    repoURL: 'https://baltig.infn.it/epics-containers/epik8-backend.git'
     path: .
     targetRevision: HEAD
     helm:
@@ -21,3 +21,6 @@ spec:
     automated:
       prune: true  # Optional: Automatically remove resources not specified in Helm chart
       selfHeal: true
+    syncOptions:
+      - CreateNamespace=true 
+      - Prune=true
