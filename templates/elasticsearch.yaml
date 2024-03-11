@@ -15,7 +15,11 @@ spec:
       values: |
         global:
           kibanaEnabled: true
-
+          {{- if .Values.openshift }}
+          compatibility:
+            openshift:
+                adaptSecurityContext: enabled
+          {{- end }}
         clusterName: elastic
         
         master:
@@ -23,15 +27,18 @@ spec:
             enabled: false
           ingress:
             enabled: true
-            hostname: elasticsearch.apps.okd-datest.lnf.infn.it
+            hostname: elasticsearch.{{.Values.domain}}
             path: /
+            ingressClassName: {{.Values.ingressClassName }}
           masterOnly: false
           replicaCount: 1
+          {{- if .Values.openshift }}
           serviceAccount:
             name: "default"
             create: false
+          {{- endif }}
           persistence:
-            size: 32Gi
+            size: {{- .Values.size }}
         data:
           replicaCount: 0
         coordinating:
@@ -50,11 +57,14 @@ spec:
         kibana:
           ingress:
             enabled: true
-            hostname: kibana.apps.okd-datest.lnf.infn.it
+            hostname: kibana.{{.Values.domain}}
             path: /
+            ingressClassName: {{.Values.ingressClassName }}
+          {{- if .Values.openshift }}
           serviceAccount:
             name: "default"
             create: false
+          {{- endif }}
           ##
           networkPolicy:
             enabled: false
@@ -63,7 +73,7 @@ spec:
               - elasticsearch.backend.svc.cluster.local
             security:
               auth:
-                enabled: false
+                enabled: true
                 # default in the elasticsearch chart is elastic
                 kibanaUsername: "epics"
                 kibanaPassword: "epics"

@@ -13,6 +13,9 @@ spec:
       parameters:
         - name: namespace
           value: backend
+        - name: domain
+          value: "212.189.145.160.myip.cloud.infn.it"
+          
         ## other values from values.yaml
   destination:
     server: 'https://kubernetes.default.svc'
