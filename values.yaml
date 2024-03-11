@@ -1,5 +1,5 @@
 namespace: backend
 openshift: false
-ingressClassName: "ngnix"
+ingressClassName: "nginx"
 domain: apps.okd-datest.lnf.infn.it
 size: 10Gi
