@@ -16,7 +16,18 @@ spec:
         architecture: standalone
         replicaCount: 1
         auth:
-          enabled: false       
+          enabled: false
+        securityContext:
+          privileged: true
+          runAsUser: 0 
+          runAsGroup: 0
+          fsGroup: 0
+        containers:
+          securityContext:
+            allowPrivilegeEscalation: true
+            privileged: true
+            runAsNonRoot: false
+            runAsUser: 0
   destination:
     server: https://kubernetes.default.svc
     namespace: {{ .Values.namespace | quote }}
