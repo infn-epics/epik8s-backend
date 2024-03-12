@@ -18,15 +18,14 @@ spec:
         auth:
           enabled: false
         securityContext:
-          privileged: true
           runAsUser: 0 
           runAsGroup: 0
           fsGroup: 0
         containerSecurityContext:
           allowPrivilegeEscalation: true
-          privileged: true
           runAsNonRoot: false
           runAsUser: 0
+          fsGroup: 0
   destination:
     server: https://kubernetes.default.svc
     namespace: {{ .Values.namespace | quote }}
