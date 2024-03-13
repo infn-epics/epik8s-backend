@@ -28,6 +28,10 @@ spec:
           replicaCount: 1
           persistence:
             size: 32Gi
+          heapSize: 1g
+          extraEnvVars:
+            - name: ES_JAVA_OPTS
+              value: "-Xms1g -Xmx1g -Dlog4j2.formatMsgNoLookups=true"
         data:
           replicaCount: 0
         coordinating:
