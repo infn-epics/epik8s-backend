@@ -11,12 +11,16 @@ spec:
     targetRevision: HEAD
     helm:
       parameters:
+        - name: ingressClassName
+          value: "" ## no define otherwise does not create route
         - name: namespace
           value: backend
         - name: domain
-          value: "212.189.145.160.myip.cloud.infn.it"
-          
-        ## other values from values.yaml
+          value: "apps.okd-datest.lnf.infn.it"
+        - name: openshift
+          value: true 
+        - name: size
+          value: 50Gi
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: backend

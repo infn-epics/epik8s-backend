@@ -29,7 +29,9 @@ spec:
             enabled: true
             hostname: elasticsearch.{{.Values.domain}}
             path: /
+            {{- if .Values.ingressClassName }}
             ingressClassName: {{.Values.ingressClassName }}
+            {{- end }}
           masterOnly: false
           replicaCount: 1
           {{- if .Values.openshift }}

@@ -12,7 +12,7 @@ __NOTE:__
 Example start application on a cloud infn account.
 
 ```
-kubectl apply -f examples/epik8-backend-example-cloudinfn.yaml
+kubectl apply -f examples/epik8-backend-cloudinfn.yaml
 ```
 
 ## ARGOCD installation instructions
