@@ -19,8 +19,6 @@ spec:
             name: "default"
             create: false
         
-          
-          
   destination:
     server: https://kubernetes.default.svc
     namespace: {{ .Values.namespace | quote }}
@@ -28,9 +26,5 @@ spec:
     automated:
       prune: true
       selfHeal: true
-      syncTimeout: 10m
-  resource:
-  customizations:
-    timeout:
-      seconds: 600
+  
 

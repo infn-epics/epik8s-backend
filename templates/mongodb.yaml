@@ -29,9 +29,5 @@ spec:
     automated:
       prune: true
       selfHeal: true
-      syncTimeout: 10m
-  resource:
-  customizations:
-    timeout:
-      seconds: 600
+  
 

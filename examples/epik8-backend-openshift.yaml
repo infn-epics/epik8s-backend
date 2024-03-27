@@ -18,7 +18,7 @@ spec:
         - name: domain
           value: "apps.okd-datest.lnf.infn.it"
         - name: openshift
-          value: true 
+          value: "true" 
         - name: size
           value: 50Gi
   destination:
