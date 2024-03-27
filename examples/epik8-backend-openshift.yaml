@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: epik8-backend
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://baltig.infn.it/epics-containers/epik8-backend.git'
+    path: .
+    targetRevision: HEAD
+    helm:
+      parameters:
+        - name: namespace
+          value: backend
+        - name: domain
+          value: "212.189.145.160.myip.cloud.infn.it"
+          
+        ## other values from values.yaml
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: backend
+  syncPolicy:
+    automated:
+      prune: true  # Optional: Automatically remove resources not specified in Helm chart
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true 
+      - Prune=true
