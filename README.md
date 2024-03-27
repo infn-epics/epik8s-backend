@@ -9,8 +9,10 @@ The base backend services needed to run epics services.
 __NOTE:__
 *Require ArgoCD installed*
 
+Example start application on a cloud infn account.
+
 ```
-kubectl apply -f epik8-backend.yaml
+kubectl apply -f epik8-backend-example-cloudinfn.yaml
 ```
 
 ## ARGOCD installation instructions
