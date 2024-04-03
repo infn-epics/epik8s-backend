@@ -16,6 +16,9 @@ kubectl apply -f examples/epik8-backend-cloudinfn.yaml
 ```
 
 ## ARGOCD installation instructions
+You can find full information for a helm  installation of argocd here:
+https://github.com/argoproj/argo-helm/tree/main/charts/argo-cd
+
 ```
 helm repo add argo https://argoproj.github.io/argo-helm
 helm repo update
@@ -26,3 +29,7 @@ kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.pas
 
 ## then connect to https://<domain specified into argocd_values>
 ```
+*NOTE*
+update the __argocd_values.yaml__ for your K8S installation. 
+
+Pay attention to *domain* and the ingress class supported by your k8s installation 
