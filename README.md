@@ -14,6 +14,13 @@ Example start application on a cloud infn account.
 ```
 kubectl apply -f examples/epik8-backend-cloudinfn.yaml
 ```
+*NOTE*
+you must change your domain name in the examples:
+```
+  - name: domain
+          value: "<mydomain name>"
+```
+Normally is the name where your master is and the where the ingress (typically ngnix or hproxy) of your installation responds
 
 ## ARGOCD installation instructions
 You can find full information for a helm  installation of argocd here:
