@@ -14,7 +14,7 @@ spec:
     helm:
       values: |
         global:
-          kibanaEnabled: true
+          kibanaEnabled: false
           {{- if .Values.openshift }}
           compatibility:
             openshift:
