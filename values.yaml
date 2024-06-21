@@ -7,6 +7,7 @@ size: 10Gi
 elasticsearch:
   targetRevision: '21.2.5'
   replicaCount: 1
+  kibanaEnabled: true
   resources:
       limits:
         cpu: 5
