@@ -38,7 +38,7 @@ spec:
             ingressClassName: {{.Values.ingressClassName }}
             {{- end }}
           masterOnly: false
-          replicaCount: {{.Values.elastisearch.replicaCount}}
+          replicaCount: {{.Values.elasticsearch.replicaCount}}
           {{- if .Values.openshift }}
           serviceAccount:
             name: "default"
