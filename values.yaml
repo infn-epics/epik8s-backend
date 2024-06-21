@@ -5,7 +5,7 @@ domain: apps.okd-datest.lnf.infn.it
 size: 10Gi
 
 elasticsearch:
-  targetRevision: '21.2.5'  
+  targetRevision: '21.2.5'
   replicaCount: 1
   resources:
       limits:
@@ -17,7 +17,7 @@ elasticsearch:
 
 mongo:
   replicaCount: 1
-  targetRevision: '14.12.3' 
+  targetRevision: '14.12.3'
   resources:
       limits:
         cpu: 2
@@ -28,7 +28,7 @@ mongo:
 
 kafka:
   replicaCount: 1
-  targetRevision: '29.3.4'  
+  targetRevision: '29.3.4'
   resources:
       limits:
         cpu: 2

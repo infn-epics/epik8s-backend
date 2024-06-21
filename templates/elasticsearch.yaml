@@ -25,7 +25,7 @@ spec:
         master:
           {{- if .Values.elasticsearch.resources }}
           resources:
-            {{ toYaml .Values.elasticsearch.resources | indent 8 }}
+{{ toYaml .Values.elasticsearch.resources | indent 10 }}
           {{- end }}
 
           networkPolicy:

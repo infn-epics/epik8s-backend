@@ -18,7 +18,7 @@ spec:
           replicaCount: {{.Values.kafka.replicaCount}}
           {{- if .Values.kafka.resources }}
           resources:
-            {{ toYaml .Values.kafka.resources | indent 8 }}
+{{ toYaml .Values.kafka.resources | indent 12 }}
           {{- end }}
         serviceAccount:
             name: "default"

@@ -17,7 +17,7 @@ spec:
         replicaCount: {{.Values.mongo.replicaCount}}
         {{- if .Values.mongo.resources }}
         resources:
-          {{ toYaml .Values.mongo.resources | indent 8 }}
+{{ toYaml .Values.mongo.resources | indent 12 }}
         {{- end }}
         serviceAccount:
             name: "default"
