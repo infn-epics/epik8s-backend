@@ -9,12 +9,16 @@ spec:
   project: default
   source:
     repoURL: 'registry-1.docker.io/bitnamicharts'  # Bitnami Helm repo
-    targetRevision: '14.12.3' 
+    targetRevision: {{.Values.mongo.targetRevision}}
     chart: mongodb
     helm:
       values: |
         architecture: standalone
-        replicaCount: 1
+        replicaCount: {{.Values.mongo.replicaCount}}
+        {{- if .Values.mongo.resources }}
+        resources:
+          {{ toYaml .Values.mongo.resources | indent 8 }}
+        {{- end }}
         serviceAccount:
             name: "default"
             create: false

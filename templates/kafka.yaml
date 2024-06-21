@@ -9,13 +9,17 @@ spec:
   project: default
   source:
     repoURL: 'registry-1.docker.io/bitnamicharts'  # Bitnami Helm repo
-    targetRevision: '>=27.1.0'  
+    targetRevision: {{.Values.targetRevision}}
     chart: kafka
     helm:
       values: |
         architecture: standalone
         controller:
-          replicaCount: 1
+          replicaCount: {{.Values.kafka.replicaCount}}
+          {{- if .Values.kafka.resources }}
+          resources:
+            {{ toYaml .Values.kafka.resources | indent 8 }}
+          {{- end }}
         serviceAccount:
             name: "default"
             create: false

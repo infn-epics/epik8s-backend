@@ -3,3 +3,36 @@ openshift: true
 ingressClassName: "nginx"
 domain: apps.okd-datest.lnf.infn.it
 size: 10Gi
+
+elasticsearch:
+  targetRevision: '21.2.5'  
+  replicaCount: 1
+  resources:
+      limits:
+        cpu: 5
+        memory: 4Gi
+      requests:
+        cpu: 1
+        memory: 2Gi
+
+mongo:
+  replicaCount: 1
+  targetRevision: '14.12.3' 
+  resources:
+      limits:
+        cpu: 2
+        memory: 2Gi
+      requests:
+        cpu: 1
+        memory: 1Gi
+
+kafka:
+  replicaCount: 1
+  targetRevision: '29.3.4'  
+  resources:
+      limits:
+        cpu: 2
+        memory: 4Gi
+      requests:
+        cpu: 1
+        memory: 2Gi

@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     repoURL: 'registry-1.docker.io/bitnamicharts'  # Bitnami Helm repo
-    targetRevision: '19.19.3'  
+    targetRevision: {{.Values.elasticsearch.targetRevision}}
     chart: elasticsearch
     helm:
       values: |
@@ -23,6 +23,11 @@ spec:
         clusterName: elastic
         
         master:
+          {{- if .Values.elasticsearch.resources }}
+          resources:
+            {{ toYaml .Values.elasticsearch.resources | indent 8 }}
+          {{- end }}
+
           networkPolicy:
             enabled: false
           ingress:
@@ -33,7 +38,7 @@ spec:
             ingressClassName: {{.Values.ingressClassName }}
             {{- end }}
           masterOnly: false
-          replicaCount: 1
+          replicaCount: {{.Values.elastisearch.replicaCount}}
           {{- if .Values.openshift }}
           serviceAccount:
             name: "default"
