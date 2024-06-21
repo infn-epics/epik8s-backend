@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     repoURL: 'registry-1.docker.io/bitnamicharts'  # Bitnami Helm repo
-    targetRevision: {{.Values.targetRevision}}
+    targetRevision: {{.Values.kafka.targetRevision}}
     chart: kafka
     helm:
       values: |
