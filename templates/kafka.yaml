@@ -27,6 +27,8 @@ spec:
             enabled: false
         auth:
           enable: false
+          clientProtocol: plaintext
+          interBrokerProtocol: plaintext
       {{- if .Values.kafka.externalAccess }}
         externalAccess:
 {{ toYaml .Values.kafka.externalAccess | indent 12 }}
