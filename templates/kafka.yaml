@@ -39,8 +39,8 @@ spec:
             enabled: false
         auth:
           enable: false
-          clientProtocol: plaintext
-          interBrokerProtocol: plaintext
+          clientProtocol: PLAINTEXT
+          interBrokerProtocol: PLAINTEXT
       {{- if .Values.kafka.externalAccess }}
         externalAccess:
 {{ toYaml .Values.kafka.externalAccess | indent 12 }}
