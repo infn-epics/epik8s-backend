@@ -36,19 +36,21 @@ kafka:
   service:
   externalAccess:
     enabled: true
-    service:
-      broker:
+    
+    broker:
+      service:
         type: LoadBalancer
         loadBalancerIPs:
             - 192.168.36.206
         ports:
           external: 9094
-        
-      controller:
+      
+    controller:
+      service:
         type: LoadBalancer
         loadBalancerIPs:
             - 192.168.36.205
-        containerPorts:
+        ports:
           external: 9094
         
     
