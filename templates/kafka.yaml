@@ -26,8 +26,7 @@ spec:
   
           external:
             protocol: PLAINTEXT
-        sasl:
-          {}
+        
           # enable: false
           # interbroker:
           #   user: ""
