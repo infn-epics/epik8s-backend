@@ -14,15 +14,19 @@ spec:
     helm:
       values: |
         architecture: standalone
+      {{- if .Values.kafka.externalAccess }}
+        externalAccess:
+{{ toYaml .Values.kafka.externalAccess | indent 12 }}
+      {{- end }}
         controller:
           replicaCount: {{.Values.kafka.replicaCount}}
           {{- if .Values.kafka.resources }}
           resources:
 {{ toYaml .Values.kafka.resources | indent 12 }}
           {{- end }}
-        serviceAccount:
-            name: "default"
-            create: false
+        # serviceAccount:
+        #     name: "default"
+        #     create: false
         
   destination:
     server: https://kubernetes.default.svc
