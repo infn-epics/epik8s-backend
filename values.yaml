@@ -36,8 +36,6 @@ kafka:
   service:
   externalAccess:
     enabled: true
-    autoDiscovery: 
-      enabled: true
     service:
       broker:
         type: LoadBalancer
