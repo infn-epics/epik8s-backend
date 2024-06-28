@@ -14,6 +14,8 @@ spec:
     helm:
       values: |
         architecture: standalone
+        auth:
+          enable: false
       {{- if .Values.kafka.externalAccess }}
         externalAccess:
 {{ toYaml .Values.kafka.externalAccess | indent 12 }}
