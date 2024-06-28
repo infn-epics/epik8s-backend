@@ -14,6 +14,17 @@ spec:
     helm:
       values: |
         architecture: standalone
+        sasl:
+          enable: false
+          interbroker:
+            user: ""
+            password: ""
+          controller:
+            user: ""
+            password: ""
+        zookeeper:
+          auth:
+            enabled: false
         auth:
           enable: false
       {{- if .Values.kafka.externalAccess }}
