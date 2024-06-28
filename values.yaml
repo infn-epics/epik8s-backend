@@ -42,13 +42,13 @@ kafka:
         ports:
           external: 9094
         loadBalancerIPs:
-            - 192.168.36.206
+          - 192.168.36.206
       controller:
         type: LoadBalancer
         containerPorts:
           external: 9094
-          loadBalancerIPs:
-            - 192.168.36.205
+        loadBalancerIPs:
+          - 192.168.36.205
     
   resources:
       limits:
