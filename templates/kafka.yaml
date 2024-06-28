@@ -14,14 +14,27 @@ spec:
     helm:
       values: |
         architecture: standalone
-        sasl:
-          enable: false
-          interbroker:
-            user: ""
-            password: ""
+        listeners:
+          client:
+            protocol: PLAINTEXT
+  
           controller:
-            user: ""
-            password: ""
+            protocol: PLAINTEXT
+
+          interbroker:
+            protocol: PLAINTEXT
+  
+          external:
+            protocol: PLAINTEXT
+        sasl:
+          {}
+          # enable: false
+          # interbroker:
+          #   user: ""
+          #   password: ""
+          # controller:
+          #   user: ""
+          #   password: ""
         zookeeper:
           auth:
             enabled: false
