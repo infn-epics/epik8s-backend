@@ -16,8 +16,10 @@ spec:
         architecture: standalone
         zookeeper:
           enabled: true
-        kraft:
-          enabled: false
+          auth:
+            enabled: false
+          replicaCount: 1
+        
 
         listeners:
           client:
@@ -40,9 +42,7 @@ spec:
           #   user: ""
           #   password: ""
         
-        zookeeper:
-          auth:
-            enabled: false
+        
         broker:
           zookeeperMigrationMode: true
         auth:

@@ -29,7 +29,7 @@ mongo:
 
 kafka:
   replicaCount: 1
-  targetRevision: '29.3.4'
+  targetRevision: '21.0.0'
   auth:
     clientProtocol: ""
     interBrokerProtocol: ""
