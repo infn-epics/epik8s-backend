@@ -26,18 +26,7 @@ spec:
         rbac:
           create: true
 
-        listeners:
-          client:
-            protocol: plaintext
-  
-          controller:
-            protocol: plaintext
-
-          interbroker:
-            protocol: plaintext
-  
-          external:
-            protocol: plaintext
+        
         
           # enable: false
           # interbroker:
