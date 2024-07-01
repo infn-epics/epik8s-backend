@@ -20,7 +20,12 @@ spec:
             enabled: false
           replicaCount: 1
         
-
+        # serviceAccount:
+        #   create: false
+        #   name: "default"
+        rbac:
+          create: true
+          
         listeners:
           client:
             protocol: plaintext
