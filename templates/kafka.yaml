@@ -43,8 +43,7 @@ spec:
           #   password: ""
         
         
-        broker:
-          zookeeperMigrationMode: true
+        
         auth:
           enable: false
           clientProtocol: PLAINTEXT
