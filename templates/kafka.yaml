@@ -37,12 +37,12 @@ spec:
           # controller:
           #   user: ""
           #   password: ""
-        kraft:
-          enabled: false
+        
         zookeeper:
-          enabled: true
           auth:
             enabled: false
+        broker:
+          zookeeperMigrationMode: true
         auth:
           enable: false
           clientProtocol: PLAINTEXT
