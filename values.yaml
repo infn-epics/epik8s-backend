@@ -29,19 +29,16 @@ mongo:
 
 kafka:
   replicaCount: 1
-  targetRevision: '20.0.0'
+  targetRevision: '20.1.1'
   auth:
     clientProtocol: ""
     interBrokerProtocol: ""
   
   
-  service:
-
   externalAccess:
     enabled: true
     
     service:
-      allocateLoadBalancerNodePorts: false
       type: LoadBalancer
       loadBalancerIPs:
           - 192.168.36.206
