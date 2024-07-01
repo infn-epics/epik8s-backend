@@ -23,16 +23,16 @@ spec:
 
         listeners:
           client:
-            protocol: PLAINTEXT
+            protocol: plaintext
   
           controller:
-            protocol: PLAINTEXT
+            protocol: plaintext
 
           interbroker:
-            protocol: PLAINTEXT
+            protocol: plaintext
   
           external:
-            protocol: PLAINTEXT
+            protocol: plaintext
         
           # enable: false
           # interbroker:
@@ -46,8 +46,8 @@ spec:
         
         auth:
           enable: false
-          clientProtocol: PLAINTEXT
-          interBrokerProtocol: PLAINTEXT
+          clientProtocol: plaintext
+          interBrokerProtocol: plaintext
       {{- if .Values.kafka.externalAccess }}
         externalAccess:
 {{ toYaml .Values.kafka.externalAccess | indent 12 }}
