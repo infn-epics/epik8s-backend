@@ -16,7 +16,8 @@ spec:
         architecture: standalone
         zookeeper:
           enabled: true
-      
+        kraft:
+          enabled: false
 
         listeners:
           client:
