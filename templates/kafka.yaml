@@ -52,7 +52,7 @@ spec:
 {{ toYaml .Values.kafka.externalAccess | indent 12 }}
       {{- end }}
         controller:
-          replicaCount: {{.Values.kafka.replicaCount}}
+          replicaCount: 0 # {{.Values.kafka.replicaCount}}
           {{- if .Values.kafka.resources }}
           resources:
 {{ toYaml .Values.kafka.resources | indent 12 }}
