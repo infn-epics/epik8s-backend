@@ -34,24 +34,27 @@ kafka:
     clientProtocol: ""
     interBrokerProtocol: ""
   service:
+
   externalAccess:
     enabled: true
     
     broker:
       service:
+        allocateLoadBalancerNodePorts: false
         type: LoadBalancer
         loadBalancerIPs:
             - 192.168.36.206
         ports:
-          external: 9094
+          external: 9092
       
     controller:
       service:
+        allocateLoadBalancerNodePorts: false
         type: LoadBalancer
         loadBalancerIPs:
             - 192.168.36.205
         ports:
-          external: 9094
+          external: 9092
         
     
   resources:
