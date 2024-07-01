@@ -37,7 +37,9 @@ spec:
           #   password: ""
         
         
-        
+        service:
+          clusterIP: None
+          
         auth:
           enable: false
           clientProtocol: plaintext
