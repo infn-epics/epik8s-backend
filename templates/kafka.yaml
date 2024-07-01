@@ -14,7 +14,8 @@ spec:
     helm:
       values: |
         architecture: standalone
-        
+        zookeeper:
+          enabled: true
       
 
         listeners:
