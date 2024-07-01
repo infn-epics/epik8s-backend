@@ -28,11 +28,13 @@ mongo:
         memory: 1Gi
 
 kafka:
-  replicaCount: 3
+  replicaCount: 1
   targetRevision: '29.3.4'
   auth:
     clientProtocol: ""
     interBrokerProtocol: ""
+  
+  
   service:
 
   externalAccess:
