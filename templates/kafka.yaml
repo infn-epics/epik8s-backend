@@ -14,10 +14,8 @@ spec:
     helm:
       values: |
         architecture: standalone
-        kraft:
-          enabled: false
-        zookeeper:
-          enabled: true
+        
+      
 
         listeners:
           client:
@@ -39,7 +37,10 @@ spec:
           # controller:
           #   user: ""
           #   password: ""
+        kraft:
+          enabled: false
         zookeeper:
+          enabled: true
           auth:
             enabled: false
         auth:
