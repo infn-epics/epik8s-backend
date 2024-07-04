@@ -43,9 +43,7 @@ kafka:
       loadBalancerIPs:
           - 192.168.36.205
       ports:
-        external: 9092
-      nodePorts:
-      
+        external: 9092      
       
     # controller:
     #   service:

@@ -41,12 +41,7 @@ spec:
         externalAccess:
 {{ toYaml .Values.kafka.externalAccess | indent 12 }}
       {{- end }}
-        controller:
-          replicaCount: 0 # {{.Values.kafka.replicaCount}}
-          
-        # serviceAccount:
-        #     name: "default"
-        #     create: false
+        
         
   destination:
     server: https://kubernetes.default.svc
