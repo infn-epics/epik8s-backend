@@ -25,21 +25,14 @@ spec:
           name: "default"
         rbac:
           create: true
-
-        
-        
-          # enable: false
-          # interbroker:
-          #   user: ""
-          #   password: ""
-          # controller:
-          #   user: ""
-          #   password: ""
         
         
         service:
           clusterIP: None
-          
+{{- if .Values.kafka.resources }}
+        resources:
+{{ toYaml .Values.kafka.resources | indent 12 }}
+{{- end }}
         auth:
           enable: false
           clientProtocol: plaintext
@@ -50,10 +43,7 @@ spec:
       {{- end }}
         controller:
           replicaCount: 0 # {{.Values.kafka.replicaCount}}
-          {{- if .Values.kafka.resources }}
-          resources:
-{{ toYaml .Values.kafka.resources | indent 12 }}
-          {{- end }}
+          
         # serviceAccount:
         #     name: "default"
         #     create: false

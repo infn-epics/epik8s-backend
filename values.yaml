@@ -44,6 +44,8 @@ kafka:
           - 192.168.36.205
       ports:
         external: 9092
+      nodePorts:
+      
       
     # controller:
     #   service:
