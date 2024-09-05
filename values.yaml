@@ -1,6 +1,6 @@
 namespace: backend
 openshift: true
-ingressClassName: "nginx"
+# ingressClassName: "nginx"
 domain: apps.okd-datest.lnf.infn.it
 size: 10Gi
 
@@ -19,6 +19,7 @@ elasticsearch:
 mongo:
   replicaCount: 1
   targetRevision: '14.12.3'
+  
   resources:
       limits:
         cpu: 2
@@ -43,7 +44,7 @@ kafka:
       loadBalancerIPs:
           - 192.168.36.205
       ports:
-        external: 9092      
+        external: 9092
       
   resources:
       limits:
