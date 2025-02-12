@@ -19,6 +19,10 @@ spec:
           auth:
             enabled: false
           replicaCount: 1
+{{- if .Values.kafka.resources }}
+          resources:
+{{ toYaml .Values.kafka.resources | indent 14 }}
+{{- end }}
         
         serviceAccount:
           create: false
