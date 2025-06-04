@@ -1,0 +1,35 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: epik8s-backend
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/infn-epics/epik8s-backend.git'
+    path: .
+    targetRevision: HEAD
+    helm:
+      values: |
+          namespace: backend
+          domain: "da"
+          kafka:
+            externalAccess:
+              enabled: true
+      
+              service:
+                type: LoadBalancer
+                loadBalancerIPs:
+                    - 10.10.6.250
+                ports:
+                  external: 9092
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: backend
+  syncPolicy:
+    automated:
+      prune: true  # Optional: Automatically remove resources not specified in Helm chart
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true 
+      - Prune=true
