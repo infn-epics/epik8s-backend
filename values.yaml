@@ -78,7 +78,7 @@ kafka:
   # Strimzi Operator configuration
   strimzi:
     # Strimzi operator Helm chart version
-    operatorVersion: "0.43.0"
+    operatorVersion: "0.48.0"
     
     # Git repository for Kafka CR manifests
     repoURL: "https://github.com/infn-epics/epik8s-backend.git"
