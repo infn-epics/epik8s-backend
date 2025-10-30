@@ -35,10 +35,22 @@ spec:
           enable: false
           clientProtocol: {{ .Values.kafka.auth.clientProtocol | default "plaintext" }}
           interBrokerProtocol: {{ .Values.kafka.auth.interBrokerProtocol | default "plaintext" }}
-        {{- if .Values.kafka.externalAccess }}
+        {{- if .Values.kafka.externalAccess.enabled }}
         
+        ## External access configuration for Kafka v32+
         externalAccess:
-{{ toYaml .Values.kafka.externalAccess | indent 10 }}
+          enabled: true
+          autoDiscovery:
+            enabled: false
+          controller:
+            service:
+              type: {{ .Values.kafka.externalAccess.service.type | default "LoadBalancer" }}
+              {{- if .Values.kafka.externalAccess.service.loadBalancerIPs }}
+              loadBalancerIPs:
+{{ toYaml .Values.kafka.externalAccess.service.loadBalancerIPs | indent 16 }}
+              {{- end }}
+              ports:
+                external: {{ .Values.kafka.externalAccess.service.ports.external | default 9094 }}
         {{- end }}
         
   destination:

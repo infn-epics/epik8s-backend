@@ -69,7 +69,7 @@ kafka:
   # Number of Kafka broker replicas
   replicaCount: 1
   
-  # Bitnami Kafka chart version
+  # Bitnami Kafka chart version (v32+ uses new externalAccess structure)
   targetRevision: '32.4.3'
   
   # Authentication configuration
@@ -77,18 +77,24 @@ kafka:
     clientProtocol: "plaintext"
     interBrokerProtocol: "plaintext"
   
-  # External access configuration
+  # External access configuration (for Kafka v32+)
+  # IMPORTANT: When enabling external access:
+  # - Set externalAccess.enabled=true
+  # - Provide loadBalancerIPs matching the number of replicas
+  # - Each replica needs its own LoadBalancer IP
   externalAccess:
     enabled: false
     service:
       type: LoadBalancer
-      # List of IPs for external access (one per replica)
+      # List of IPs for external access (MUST match replicaCount when enabled)
+      # Example for 3 replicas:
       loadBalancerIPs: []
       # - 10.10.6.250
       # - 10.10.6.251
       # - 10.10.6.252
       ports:
-        external: 9092
+        # External port for client connections
+        external: 9094
   
   # Resource limits and requests
   resources:
