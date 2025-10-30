@@ -15,8 +15,8 @@ spec:
     chart: strimzi-kafka-operator
     helm:
       values: |
-        watchNamespaces:
-          - {{ .Values.namespace | quote }}
+        # Leave watchNamespaces empty - it defaults to .Release.Namespace
+        watchNamespaces: []
 {{- if .Values.kafka.strimzi.operatorResources }}
         resources:
 {{ toYaml .Values.kafka.strimzi.operatorResources | indent 10 }}
