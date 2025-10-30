@@ -11,7 +11,7 @@ spec:
   project: default
   source:
     repoURL: 'https://strimzi.io/charts/'
-    targetRevision: {{ .Values.kafka.strimzi.operatorVersion | default "0.43.0" | quote }}
+    targetRevision: {{ .Values.kafka.strimzi.operatorVersion | default "0.48.0" | quote }}
     chart: strimzi-kafka-operator
     helm:
       values: |
