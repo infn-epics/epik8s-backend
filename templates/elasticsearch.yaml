@@ -15,6 +15,13 @@ spec:
     chart: elasticsearch
     helm:
       values: |
+        # Override image - use official Elasticsearch image
+        # Bitnami removed docker.io/bitnami registry on Aug 28, 2025
+        image:
+          registry: docker.elastic.co
+          repository: elasticsearch/elasticsearch
+          tag: "8.14.1"
+        
         global:
           kibanaEnabled: {{ .Values.elasticsearch.kibanaEnabled }}
           {{- if .Values.openshift }}

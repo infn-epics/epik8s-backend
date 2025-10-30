@@ -15,6 +15,13 @@ spec:
     chart: mongodb
     helm:
       values: |
+        # Override image - use official MongoDB image instead of Bitnami
+        # Bitnami removed docker.io/bitnami registry on Aug 28, 2025
+        image:
+          registry: docker.io
+          repository: mongo
+          tag: "7.0"
+        
         architecture: standalone
         replicaCount: {{ .Values.mongo.replicaCount }}
         
