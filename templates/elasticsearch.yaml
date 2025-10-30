@@ -30,6 +30,12 @@ spec:
         secret:
           enabled: false
         
+        # Set a dummy password to satisfy readiness probe
+        # (not actually used since security is disabled)
+        extraEnvs:
+          - name: ELASTIC_PASSWORD
+            value: ""
+        
         # Disable security features completely
         esConfig:
           elasticsearch.yml: |
