@@ -1,4 +1,18 @@
 apiVersion: v2
 name: backend
-version: 1.0.1
+description: EPIK8S Backend Services - Elasticsearch, MongoDB, and Kafka for EPICS infrastructure
+version: 1.0.2
+type: application
+keywords:
+  - epics
+  - backend
+  - elasticsearch
+  - mongodb
+  - kafka
+  - argocd
+home: https://github.com/infn-epics/epik8s-backend
+maintainers:
+  - name: INFN EPICS Team
+sources:
+  - https://github.com/infn-epics/epik8s-backend
 

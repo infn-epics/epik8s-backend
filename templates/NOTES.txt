@@ -1,0 +1,44 @@
+Thank you for installing {{ .Chart.Name }}!
+
+Your EPIK8S backend services have been configured.
+
+IMPORTANT: These are ArgoCD Application manifests. They will be deployed by ArgoCD.
+
+Namespace: {{ .Values.namespace }}
+Domain: {{ .Values.domain }}
+
+Services being deployed:
+- Elasticsearch ({{ .Values.elasticsearch.replicaCount }} replicas)
+  URL: https://elasticsearch.{{ .Values.domain }}
+{{- if .Values.elasticsearch.kibanaEnabled }}
+- Kibana Dashboard
+  URL: https://kibana.{{ .Values.domain }}
+  Username: {{ .Values.elasticsearch.kibana.username }}
+  Password: {{ .Values.elasticsearch.kibana.password }}
+{{- end }}
+
+- MongoDB ({{ .Values.mongo.replicaCount }} replicas)
+{{- if .Values.mongo.auth.enabled }}
+  Authentication: Enabled
+  Root User: {{ .Values.mongo.auth.rootUser }}
+{{- else }}
+  Authentication: Disabled
+{{- end }}
+
+- Kafka ({{ .Values.kafka.replicaCount }} brokers)
+{{- if .Values.kafka.externalAccess.enabled }}
+  External Access: Enabled
+  Load Balancer IPs: {{ .Values.kafka.externalAccess.service.loadBalancerIPs | join ", " }}
+  External Port: {{ .Values.kafka.externalAccess.service.ports.external }}
+{{- end }}
+
+To check the status of your applications:
+  kubectl get applications -n argocd
+
+To sync applications manually:
+  argocd app sync elasticsearch
+  argocd app sync mongodb
+  argocd app sync kafka
+
+For more information, visit:
+  {{ .Chart.Home }}

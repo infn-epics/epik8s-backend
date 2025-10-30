@@ -4,35 +4,46 @@ metadata:
   name: mongodb
   namespace: argocd
   finalizers:
-  - resources-finalizer.argocd.argoproj.io
+    - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
-    repoURL: 'registry-1.docker.io/bitnamicharts'  # Bitnami Helm repo
-    targetRevision: {{.Values.mongo.targetRevision}}
+    repoURL: 'registry-1.docker.io/bitnamicharts'
+    targetRevision: {{ .Values.mongo.targetRevision | quote }}
     chart: mongodb
     helm:
       values: |
         architecture: standalone
-        replicaCount: {{.Values.mongo.replicaCount}}
+        replicaCount: {{ .Values.mongo.replicaCount }}
+        
         {{- if .Values.mongo.resources }}
         resources:
-{{ toYaml .Values.mongo.resources | indent 12 }}
+{{ toYaml .Values.mongo.resources | indent 10 }}
         {{- end }}
-        serviceAccount:
-            name: "default"
-            create: false
-        auth:
-          enabled: false
         
-          
-          
+        serviceAccount:
+          name: "default"
+          create: false
+        
+        auth:
+          enabled: {{ .Values.mongo.auth.enabled | default false }}
+          {{- if .Values.mongo.auth.enabled }}
+          rootUser: {{ .Values.mongo.auth.rootUser | default "root" | quote }}
+          rootPassword: {{ .Values.mongo.auth.rootPassword | default "changeme" | quote }}
+          {{- if .Values.mongo.auth.database }}
+          database: {{ .Values.mongo.auth.database | quote }}
+          {{- end }}
+          {{- end }}
+        
   destination:
     server: https://kubernetes.default.svc
     namespace: {{ .Values.namespace | quote }}
+  
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
   
 

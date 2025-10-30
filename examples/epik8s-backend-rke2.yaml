@@ -15,6 +15,7 @@ spec:
           domain: "k8sda.lnf.infn.it"
           kafka:
             replicaCount: 3
+            targetRevision: '32.4.3'
             externalAccess:
               enabled: true
       
@@ -22,6 +23,8 @@ spec:
                 type: LoadBalancer
                 loadBalancerIPs:
                     - 10.10.6.250
+                    - 10.10.6.251
+                    - 10.10.6.252
                 ports:
                   external: 9092
   destination:

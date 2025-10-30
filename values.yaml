@@ -1,55 +1,100 @@
+# Global Configuration
+# Target namespace for all backend services
 namespace: backend
-openshift: true
+
+# Enable OpenShift specific configurations
+openshift: false
+
+# Ingress class name (use "" for OpenShift routes)
 ingressClassName: "nginx"
+
+# Base domain for ingress hosts
 domain: apps.okd-datest.lnf.infn.it
+
+# Default persistent volume size
 size: 10Gi
 
+# Elasticsearch Configuration
 elasticsearch:
+  # Bitnami Elasticsearch chart version
   targetRevision: '21.2.5'
+  
+  # Number of Elasticsearch master nodes
   replicaCount: 1
+  
+  # Enable Kibana dashboard
   kibanaEnabled: true
+  
+  # Resource limits and requests
   resources:
-      limits:
-        cpu: 5
-        memory: 4Gi
-      requests:
-        cpu: 1
-        memory: 2Gi
+    limits:
+      cpu: 5
+      memory: 4Gi
+    requests:
+      cpu: 1
+      memory: 2Gi
+  
+  # Kibana authentication credentials
+  kibana:
+    username: "epics"
+    password: "epics"
 
+# MongoDB Configuration
 mongo:
+  # Number of MongoDB replicas
   replicaCount: 1
+  
+  # Bitnami MongoDB chart version
   targetRevision: '14.12.3'
   
-  resources:
-      limits:
-        cpu: 2
-        memory: 2Gi
-      requests:
-        cpu: 1
-        memory: 1Gi
-
-kafka:
-  replicaCount: 1
-  targetRevision: '20.1.1'
+  # Authentication settings
   auth:
-    clientProtocol: ""
-    interBrokerProtocol: ""
+    enabled: false
+    # Uncomment and set if auth is enabled
+    # rootUser: "root"
+    # rootPassword: "changeme"
+    # database: "olog"
   
+  # Resource limits and requests
+  resources:
+    limits:
+      cpu: 2
+      memory: 2Gi
+    requests:
+      cpu: 1
+      memory: 1Gi
+
+# Kafka Configuration
+kafka:
+  # Number of Kafka broker replicas
+  replicaCount: 1
   
+  # Bitnami Kafka chart version
+  targetRevision: '32.4.3'
+  
+  # Authentication configuration
+  auth:
+    clientProtocol: "plaintext"
+    interBrokerProtocol: "plaintext"
+  
+  # External access configuration
   externalAccess:
-    enabled: true
-    
+    enabled: false
     service:
       type: LoadBalancer
-      loadBalancerIPs:
-          - 192.168.36.205
+      # List of IPs for external access (one per replica)
+      loadBalancerIPs: []
+      # - 10.10.6.250
+      # - 10.10.6.251
+      # - 10.10.6.252
       ports:
         external: 9092
-      
+  
+  # Resource limits and requests
   resources:
-      limits:
-        cpu: 2
-        memory: 4Gi
-      requests:
-        cpu: 1
-        memory: 2Gi
+    limits:
+      cpu: 2
+      memory: 4Gi
+    requests:
+      cpu: 1
+      memory: 2Gi
