@@ -41,10 +41,13 @@ elasticsearch:
 
 # MongoDB Configuration
 mongo:
+  # Enable MongoDB deployment
+  enabled: true
+  
   # Number of MongoDB replicas
   replicaCount: 1
   
-  # Bitnami MongoDB chart version
+  # Bitnami MongoDB chart version (not used with direct deployment)
   targetRevision: '14.12.3'
   
   # Authentication settings
