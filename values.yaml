@@ -23,7 +23,7 @@ elasticsearch:
   replicaCount: 1
   
   # Enable Kibana dashboard
-  kibanaEnabled: true
+  kibanaEnabled: false
   
   # Kibana chart version (separate from Elasticsearch)
   kibanaTargetRevision: '8.5.1'

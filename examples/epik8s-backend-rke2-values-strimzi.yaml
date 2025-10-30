@@ -1,5 +1,14 @@
 namespace: backend
 domain: "k8sda.lnf.infn.it"
+elasticsearch:
+  # Official Elastic Helm chart version (https://github.com/elastic/helm-charts)
+  targetRevision: '8.5.1'
+  
+  # Number of Elasticsearch nodes
+  replicaCount: 3
+  
+  # Enable Kibana dashboard
+  kibanaEnabled: false
 
 # Kafka configuration using Strimzi Operator
 kafka:
