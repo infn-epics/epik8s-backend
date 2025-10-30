@@ -91,6 +91,10 @@ spec:
         # Kibana configuration
         elasticsearchHosts: "http://elasticsearch-master.{{ .Values.namespace }}.svc.cluster.local:9200"
         
+        # Disable certificate verification since Elasticsearch has security disabled
+        elasticsearchCertificateSecret: ""
+        protocol: http
+        
         # Resource limits
         resources:
           limits:
