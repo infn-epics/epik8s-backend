@@ -16,14 +16,17 @@ size: 10Gi
 
 # Elasticsearch Configuration
 elasticsearch:
-  # Bitnami Elasticsearch chart version
-  targetRevision: '21.2.5'
+  # Official Elastic Helm chart version (https://github.com/elastic/helm-charts)
+  targetRevision: '8.5.1'
   
-  # Number of Elasticsearch master nodes
+  # Number of Elasticsearch nodes
   replicaCount: 1
   
   # Enable Kibana dashboard
   kibanaEnabled: true
+  
+  # Kibana chart version (separate from Elasticsearch)
+  kibanaTargetRevision: '8.5.1'
   
   # Resource limits and requests
   resources:
