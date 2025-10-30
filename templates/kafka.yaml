@@ -33,8 +33,35 @@ spec:
     syncOptions:
       - CreateNamespace=true
 ---
-# Kafka Cluster Custom Resource
+# Kafka Node Pool for KRaft mode
 {{- if .Values.kafka.enabled }}
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaNodePool
+metadata:
+  name: {{ .Values.kafka.clusterName | default "epics-kafka" }}-pool
+  namespace: {{ .Values.namespace }}
+  labels:
+    strimzi.io/cluster: {{ .Values.kafka.clusterName | default "epics-kafka" }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
+spec:
+  replicas: {{ .Values.kafka.replicaCount | default 3 }}
+  roles:
+    - controller
+    - broker
+  storage:
+    type: {{ .Values.kafka.storage.type | default "persistent-claim" }}
+    size: {{ .Values.kafka.storage.size | default "10Gi" }}
+    deleteClaim: {{ .Values.kafka.storage.deleteClaim | default false }}
+    {{- if .Values.kafka.storage.storageClass }}
+    class: {{ .Values.kafka.storage.storageClass }}
+    {{- end }}
+  {{- if .Values.kafka.resources }}
+  resources:
+{{ toYaml .Values.kafka.resources | indent 4 }}
+  {{- end }}
+---
+# Kafka Cluster Custom Resource
 apiVersion: kafka.strimzi.io/v1beta2
 kind: Kafka
 metadata:
@@ -45,8 +72,7 @@ metadata:
 spec:
   kafka:
     version: {{ .Values.kafka.version | default "4.1.0" }}
-    # Note: replicas moved to KafkaNodePool (but keeping for backward compatibility)
-    replicas: {{ .Values.kafka.replicaCount | default 3 }}
+    # Note: replicas now defined in KafkaNodePool resource (above)
     
     listeners:
       - name: plain
@@ -79,38 +105,10 @@ spec:
       default.replication.factor: {{ min 3 .Values.kafka.replicaCount }}
       min.insync.replicas: {{ min 2 .Values.kafka.replicaCount }}
     
-    {{- if .Values.kafka.storage }}
-    storage:
-      type: {{ .Values.kafka.storage.type | default "persistent-claim" }}
-      size: {{ .Values.kafka.storage.size | default "10Gi" }}
-      deleteClaim: {{ .Values.kafka.storage.deleteClaim | default false }}
-      {{- if .Values.kafka.storage.storageClass }}
-      class: {{ .Values.kafka.storage.storageClass }}
-      {{- end }}
-    {{- end }}
-    
-    {{- if .Values.kafka.resources }}
-    resources:
-{{ toYaml .Values.kafka.resources | indent 6 }}
-    {{- end }}
+    # Note: storage is now defined in KafkaNodePool resource (above)
+    # Note: resources are now defined in KafkaNodePool resource (above)
   
-  {{- if .Values.kafka.zookeeper }}
-  zookeeper:
-    replicas: {{ .Values.kafka.zookeeper.replicaCount | default 3 }}
-    {{- if .Values.kafka.zookeeper.storage }}
-    storage:
-      type: {{ .Values.kafka.zookeeper.storage.type | default "persistent-claim" }}
-      size: {{ .Values.kafka.zookeeper.storage.size | default "5Gi" }}
-      deleteClaim: {{ .Values.kafka.zookeeper.storage.deleteClaim | default false }}
-      {{- if .Values.kafka.zookeeper.storage.storageClass }}
-      class: {{ .Values.kafka.zookeeper.storage.storageClass }}
-      {{- end }}
-    {{- end }}
-    {{- if .Values.kafka.zookeeper.resources }}
-    resources:
-{{ toYaml .Values.kafka.zookeeper.resources | indent 6 }}
-    {{- end }}
-  {{- end }}
+  # Note: ZooKeeper is deprecated since Strimzi 0.46.0 - using KRaft mode instead
   
   {{- if .Values.kafka.entityOperator }}
   {{- if .Values.kafka.entityOperator.enabled }}
