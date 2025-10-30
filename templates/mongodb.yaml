@@ -32,6 +32,9 @@ spec:
         image: mongo:7.0
         ports:
         - containerPort: 27017
+        volumeMounts:
+        - name: mongodb-data
+          mountPath: /data/db
         {{- if .Values.mongo.resources }}
         resources:
 {{ toYaml .Values.mongo.resources | indent 10 }}
@@ -47,6 +50,9 @@ spec:
           value: {{ .Values.mongo.auth.database | quote }}
         {{- end }}
         {{- end }}
+      volumes:
+      - name: mongodb-data
+        emptyDir: {}
 {{- end }}
   
 
