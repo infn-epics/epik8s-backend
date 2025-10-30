@@ -8,8 +8,9 @@ metadata:
 spec:
   project: default
   source:
-    # NOTE: Bitnami removed public docker.io/bitnami registry on Aug 28, 2025
-    repoURL: 'oci://registry-1.docker.io/bitnamicharts'
+    # NOTE: Bitnami charts moved to VMware Harbor registry
+    # See: https://github.com/bitnami/charts/tree/main/bitnami/elasticsearch
+    repoURL: 'oci://harbor.cloudinfn.cnaf.infn.it/test/bitnamicharts'
     targetRevision: {{ .Values.elasticsearch.targetRevision | quote }}
     chart: elasticsearch
     helm:
