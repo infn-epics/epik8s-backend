@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: strimzi-operator
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://strimzi.io/charts/'
+    targetRevision: "0.44.0"
+    chart: strimzi-kafka-operator
+    helm:
+      values: |
+        watchNamespaces: []
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 384Mi
+          requests:
+            cpu: 200m
+            memory: 384Mi
+  
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: backend
+  
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

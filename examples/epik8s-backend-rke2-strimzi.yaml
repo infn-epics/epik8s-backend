@@ -1,0 +1,104 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: epik8s-backend
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/infn-epics/epik8s-backend.git'
+    path: .
+    targetRevision: HEAD
+    helm:
+      values: |
+        namespace: backend
+        domain: "k8sda.lnf.infn.it"
+        
+        # Kafka configuration using Strimzi Operator
+        kafka:
+          clusterName: "epics-kafka"
+          version: "3.8.0"
+          replicaCount: 3
+          
+          # Strimzi configuration
+          strimzi:
+            operatorVersion: "0.48.0"
+            repoURL: "https://github.com/infn-epics/epik8s-backend.git"
+            targetRevision: "HEAD"
+          
+          # Storage configuration
+          storage:
+            type: persistent-claim
+            size: 10Gi
+            deleteClaim: false
+          
+          # Kafka resources
+          resources:
+            limits:
+              cpu: 2
+              memory: 4Gi
+            requests:
+              cpu: 1
+              memory: 2Gi
+          
+          # External access via LoadBalancer
+          externalAccess:
+            enabled: true
+            type: loadbalancer
+            port: 9094
+            bootstrap:
+              loadBalancerIP: 10.10.6.250
+            brokers:
+              - broker: 0
+                loadBalancerIP: 10.10.6.250
+              - broker: 1
+                loadBalancerIP: 10.10.6.251
+              - broker: 2
+                loadBalancerIP: 10.10.6.252
+          
+          # Zookeeper configuration
+          zookeeper:
+            replicaCount: 3
+            storage:
+              type: persistent-claim
+              size: 5Gi
+              deleteClaim: false
+            resources:
+              limits:
+                cpu: 1
+                memory: 2Gi
+              requests:
+                cpu: 500m
+                memory: 1Gi
+          
+          # Entity operators
+          entityOperator:
+            enabled: true
+            topicOperator:
+              resources:
+                limits:
+                  cpu: 500m
+                  memory: 512Mi
+                requests:
+                  cpu: 200m
+                  memory: 512Mi
+            userOperator:
+              resources:
+                limits:
+                  cpu: 500m
+                  memory: 512Mi
+                requests:
+                  cpu: 200m
+                  memory: 512Mi
+                  
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: backend
+  
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true 
+      - Prune=true

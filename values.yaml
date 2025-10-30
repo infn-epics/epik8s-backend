@@ -66,6 +66,9 @@ mongo:
 
 # Kafka Configuration (using Strimzi Operator)
 kafka:
+  # Enable Kafka deployment
+  enabled: true
+  
   # Kafka cluster name
   clusterName: "epics-kafka"
   

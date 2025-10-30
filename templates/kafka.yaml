@@ -34,28 +34,100 @@ spec:
       - CreateNamespace=true
 ---
 # Kafka Cluster Custom Resource
-apiVersion: argoproj.io/v1alpha1
-kind: Application
+{{- if .Values.kafka.enabled }}
+apiVersion: kafka.strimzi.io/v1beta2
+kind: Kafka
 metadata:
-  name: kafka-cluster
-  namespace: argocd
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
+  name: {{ .Values.kafka.clusterName | default "epics-kafka" }}
+  namespace: {{ .Values.namespace }}
   annotations:
     argocd.argoproj.io/sync-wave: "10"
 spec:
-  project: default
-  source:
-    repoURL: {{ .Values.kafka.strimzi.repoURL | default "https://github.com/infn-epics/epik8s-backend.git" | quote }}
-    path: kafka-cluster
-    targetRevision: {{ .Values.kafka.strimzi.targetRevision | default "HEAD" | quote }}
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: {{ .Values.namespace | quote }}
+  kafka:
+    version: {{ .Values.kafka.version | default "3.8.0" }}
+    replicas: {{ .Values.kafka.replicaCount | default 3 }}
+    
+    listeners:
+      - name: plain
+        port: 9092
+        type: internal
+        tls: false
+      {{- if .Values.kafka.externalAccess.enabled }}
+      - name: external
+        port: {{ .Values.kafka.externalAccess.port | default 9094 }}
+        type: {{ .Values.kafka.externalAccess.type | default "loadbalancer" }}
+        tls: false
+        configuration:
+          {{- if .Values.kafka.externalAccess.bootstrap }}
+          bootstrap:
+            loadBalancerIP: {{ .Values.kafka.externalAccess.bootstrap.loadBalancerIP }}
+          {{- end }}
+          {{- if .Values.kafka.externalAccess.brokers }}
+          brokers:
+          {{- range .Values.kafka.externalAccess.brokers }}
+            - broker: {{ .broker }}
+              loadBalancerIP: {{ .loadBalancerIP }}
+          {{- end }}
+          {{- end }}
+      {{- end }}
+    
+    config:
+      offsets.topic.replication.factor: {{ min 3 .Values.kafka.replicaCount }}
+      transaction.state.log.replication.factor: {{ min 3 .Values.kafka.replicaCount }}
+      transaction.state.log.min.isr: {{ min 2 .Values.kafka.replicaCount }}
+      default.replication.factor: {{ min 3 .Values.kafka.replicaCount }}
+      min.insync.replicas: {{ min 2 .Values.kafka.replicaCount }}
+    
+    {{- if .Values.kafka.storage }}
+    storage:
+      type: {{ .Values.kafka.storage.type | default "persistent-claim" }}
+      size: {{ .Values.kafka.storage.size | default "10Gi" }}
+      deleteClaim: {{ .Values.kafka.storage.deleteClaim | default false }}
+      {{- if .Values.kafka.storage.storageClass }}
+      class: {{ .Values.kafka.storage.storageClass }}
+      {{- end }}
+    {{- end }}
+    
+    {{- if .Values.kafka.resources }}
+    resources:
+{{ toYaml .Values.kafka.resources | indent 6 }}
+    {{- end }}
   
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
+  {{- if .Values.kafka.zookeeper }}
+  zookeeper:
+    replicas: {{ .Values.kafka.zookeeper.replicaCount | default 3 }}
+    {{- if .Values.kafka.zookeeper.storage }}
+    storage:
+      type: {{ .Values.kafka.zookeeper.storage.type | default "persistent-claim" }}
+      size: {{ .Values.kafka.zookeeper.storage.size | default "5Gi" }}
+      deleteClaim: {{ .Values.kafka.zookeeper.storage.deleteClaim | default false }}
+      {{- if .Values.kafka.zookeeper.storage.storageClass }}
+      class: {{ .Values.kafka.zookeeper.storage.storageClass }}
+      {{- end }}
+    {{- end }}
+    {{- if .Values.kafka.zookeeper.resources }}
+    resources:
+{{ toYaml .Values.kafka.zookeeper.resources | indent 6 }}
+    {{- end }}
+  {{- end }}
+  
+  {{- if .Values.kafka.entityOperator }}
+  {{- if .Values.kafka.entityOperator.enabled }}
+  entityOperator:
+    {{- if .Values.kafka.entityOperator.topicOperator }}
+    topicOperator:
+      {{- if .Values.kafka.entityOperator.topicOperator.resources }}
+      resources:
+{{ toYaml .Values.kafka.entityOperator.topicOperator.resources | indent 8 }}
+      {{- end }}
+    {{- end }}
+    {{- if .Values.kafka.entityOperator.userOperator }}
+    userOperator:
+      {{- if .Values.kafka.entityOperator.userOperator.resources }}
+      resources:
+{{ toYaml .Values.kafka.entityOperator.userOperator.resources | indent 8 }}
+      {{- end }}
+    {{- end }}
+  {{- end }}
+  {{- end }}
+{{- end }}

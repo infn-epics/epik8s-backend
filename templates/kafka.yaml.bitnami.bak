@@ -1,0 +1,76 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kafka
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    # NOTE: Bitnami removed public docker.io/bitnami registry on Aug 28, 2025
+    # Using OCI Helm chart repository instead
+    repoURL: 'oci://registry-1.docker.io/bitnamicharts'
+    targetRevision: {{ .Values.kafka.targetRevision | quote }}
+    chart: kafka
+    helm:
+      values: |
+        # Override image registry to use alternative source
+        # Options: 1) Bitnami Legacy (temporary), 2) Mirror to your own registry
+        {{- if .Values.kafka.image }}
+        image:
+{{ toYaml .Values.kafka.image | indent 10 }}
+        {{- end }}
+        
+        replicaCount: {{ .Values.kafka.replicaCount }}
+        architecture: replicatedKRaft
+        
+        serviceAccount:
+          create: false
+          name: "default"
+        
+        rbac:
+          create: true
+        
+        service:
+          clusterIP: None
+        {{- if .Values.kafka.resources }}
+        
+        resources:
+{{ toYaml .Values.kafka.resources | indent 10 }}
+        {{- end }}
+        
+        auth:
+          enable: false
+          clientProtocol: {{ .Values.kafka.auth.clientProtocol | default "plaintext" }}
+          interBrokerProtocol: {{ .Values.kafka.auth.interBrokerProtocol | default "plaintext" }}
+        {{- if .Values.kafka.externalAccess.enabled }}
+        
+        ## External access configuration for Kafka v32+
+        externalAccess:
+          enabled: true
+          autoDiscovery:
+            enabled: false
+          controller:
+            service:
+              type: {{ .Values.kafka.externalAccess.service.type | default "LoadBalancer" }}
+              {{- if .Values.kafka.externalAccess.service.loadBalancerIPs }}
+              loadBalancerIPs:
+{{ toYaml .Values.kafka.externalAccess.service.loadBalancerIPs | indent 16 }}
+              {{- end }}
+              ports:
+                external: {{ .Values.kafka.externalAccess.service.ports.external | default 9094 }}
+        {{- end }}
+        
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: {{ .Values.namespace | quote }}
+  
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+  
+
