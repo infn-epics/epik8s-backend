@@ -16,7 +16,7 @@ spec:
     helm:
       values: |
         # Elasticsearch cluster configuration
-        clusterName: "elastic"
+        clusterName: "elasticsearch"
         
         # Single-node deployment
         replicas: {{ .Values.elasticsearch.replicaCount }}
