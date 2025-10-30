@@ -25,10 +25,17 @@ spec:
         # Disable TLS/SSL - use HTTP instead of HTTPS
         protocol: http
         
-        # Disable security features
+        # Explicitly create secrets to disable auto-generated TLS certs
+        createCert: false
+        secret:
+          enabled: false
+        
+        # Disable security features completely
         esConfig:
           elasticsearch.yml: |
             xpack.security.enabled: false
+            xpack.security.http.ssl.enabled: false
+            xpack.security.transport.ssl.enabled: false
         
         # Resource limits
         {{- if .Values.elasticsearch.resources }}
