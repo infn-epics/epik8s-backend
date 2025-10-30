@@ -72,8 +72,8 @@ kafka:
   # Kafka cluster name
   clusterName: "epics-kafka"
   
-  # Kafka version
-  version: "3.8.0"
+  # Kafka version (Strimzi 0.48.0 supports 4.0.0 and 4.1.0)
+  version: "4.1.0"
   
   # Number of Kafka broker replicas
   replicaCount: 3

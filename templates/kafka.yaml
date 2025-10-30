@@ -44,7 +44,8 @@ metadata:
     argocd.argoproj.io/sync-wave: "10"
 spec:
   kafka:
-    version: {{ .Values.kafka.version | default "3.8.0" }}
+    version: {{ .Values.kafka.version | default "4.1.0" }}
+    # Note: replicas moved to KafkaNodePool (but keeping for backward compatibility)
     replicas: {{ .Values.kafka.replicaCount | default 3 }}
     
     listeners:

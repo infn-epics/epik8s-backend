@@ -4,7 +4,7 @@ domain: "k8sda.lnf.infn.it"
 # Kafka configuration using Strimzi Operator
 kafka:
   clusterName: "epics-kafka"
-  version: "3.8.0"
+  version: "4.1.0"
   replicaCount: 3
   
   # Strimzi configuration
