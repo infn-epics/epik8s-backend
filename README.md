@@ -9,7 +9,7 @@ This chart deploys three core backend services required for EPICS operations:
 - **Elasticsearch** - For logs, alarms, save and restore functionality
 - **Kibana** - Dashboard for Elasticsearch visualization
 - **MongoDB** - Database for the logbook (Olog) service  
-- **Kafka** - Message broker for alarm handling
+- **Kafka** - Message broker for alarm handling (via Strimzi Operator)
 
 ## Prerequisites
 
@@ -17,6 +17,52 @@ This chart deploys three core backend services required for EPICS operations:
 - ArgoCD installed and configured
 - Ingress controller (nginx, HAProxy, or OpenShift routes)
 - Helm 3.x
+- For Kafka: Strimzi Operator will be automatically installed
+
+## 🎉 Kafka via Strimzi Operator
+
+**Kafka is now deployed using the Strimzi Operator** instead of Bitnami Helm charts. This provides:
+- No dependency on Bitnami registry (which was archived Aug 28, 2025)
+- Kubernetes-native Kafka management via CRDs
+- Better scalability and upgrade capabilities
+- Official Apache Kafka images from `quay.io/strimzi`
+
+Elasticsearch and MongoDB still use Bitnami Helm charts.
+
+## ⚠️ Important: Bitnami Registry Changes (Elasticsearch & MongoDB)
+
+**As of August 28, 2025**, Bitnami has archived their public Docker Hub registry (`docker.io/bitnami`). This affects Elasticsearch and MongoDB deployments.
+
+### What This Means
+
+- Old Bitnami images from Docker Hub are no longer publicly available
+- Helm charts are now hosted as OCI artifacts: `oci://registry-1.docker.io/bitnamicharts`
+- Container images may need to be mirrored or alternative registries used
+
+### Solutions
+
+1. **Use Alternative Image Registry** (Recommended for production):
+   - Mirror images to your own private registry
+   - Update values to point to your registry:
+   ```yaml
+   kafka:
+     image:
+       registry: your-registry.example.com
+       repository: bitnami/kafka
+       tag: 3.8.0-debian-12-r5
+   ```
+
+2. **Subscribe to Bitnami Secure Images**:
+   - Access to supported, hardened images
+   - Enterprise support and long-term versions
+   - More info: https://bitnami.com/
+
+3. **Use Bitnami Legacy Registry** (Temporary only):
+   - Unsupported legacy images
+   - Not recommended for production
+   - Will accumulate unpatched vulnerabilities
+
+For more details, see: [Bitnami Migration Guide](https://community.broadcom.com/blogs/beltran-rueda-borrego/2025/08/18/how-to-prepare-for-the-bitnami-changes-coming-soon)
 
 ## Installation
 
@@ -113,20 +159,28 @@ mongo:
       memory: 2Gi
 ```
 
-#### Kafka
+#### Kafka (Strimzi Operator)
 
 ```yaml
 kafka:
+  clusterName: "epics-kafka"
+  version: "3.8.0"
   replicaCount: 3
-  targetRevision: '32.4.3'
+  strimzi:
+    operatorVersion: "0.43.0"
   externalAccess:
     enabled: true
-    service:
-      type: LoadBalancer
-      loadBalancerIPs:
-        - 10.10.6.250
-        - 10.10.6.251
-        - 10.10.6.252
+    type: loadbalancer
+    port: 9094
+    bootstrap:
+      loadBalancerIP: 10.10.6.250
+    brokers:
+      - broker: 0
+        loadBalancerIP: 10.10.6.250
+      - broker: 1
+        loadBalancerIP: 10.10.6.251
+      - broker: 2
+        loadBalancerIP: 10.10.6.252
 ```
 
 ## Examples
@@ -155,7 +209,8 @@ After deployment, services will be available at:
 - Elasticsearch: `https://elasticsearch.<your-domain>`
 - Kibana: `https://kibana.<your-domain>`
 - MongoDB: `mongodb.<namespace>.svc.cluster.local:27017`
-- Kafka: `kafka.<namespace>.svc.cluster.local:9092`
+- Kafka (internal): `epics-kafka-kafka-bootstrap.<namespace>.svc.cluster.local:9092`
+- Kafka (external): `<bootstrap-loadbalancer-ip>:9094`
 
 ## Monitoring
 
@@ -170,10 +225,24 @@ View application details:
 ```bash
 argocd app get elasticsearch
 argocd app get mongodb
-argocd app get kafka
+argocd app get strimzi-operator
+argocd app get kafka-cluster
 ```
 
-Check pod status:
+Check Kafka cluster status:
+
+```bash
+# Kafka custom resource
+kubectl get kafka -n backend
+
+# Detailed status
+kubectl describe kafka epics-kafka -n backend
+
+# Kafka pods
+kubectl get pods -n backend -l strimzi.io/cluster=epics-kafka
+```
+
+Check all pod status:
 
 ```bash
 kubectl get pods -n backend

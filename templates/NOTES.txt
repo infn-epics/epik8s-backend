@@ -25,20 +25,29 @@ Services being deployed:
   Authentication: Disabled
 {{- end }}
 
-- Kafka ({{ .Values.kafka.replicaCount }} brokers)
+- Kafka ({{ .Values.kafka.replicaCount }} brokers) via Strimzi Operator
+  Strimzi Operator Version: {{ .Values.kafka.strimzi.operatorVersion }}
+  Kafka Version: {{ .Values.kafka.version }}
+  Cluster Name: {{ .Values.kafka.clusterName }}
 {{- if .Values.kafka.externalAccess.enabled }}
-  External Access: Enabled
-  Load Balancer IPs: {{ .Values.kafka.externalAccess.service.loadBalancerIPs | join ", " }}
-  External Port: {{ .Values.kafka.externalAccess.service.ports.external }}
+  External Access: Enabled (LoadBalancer)
+  Bootstrap IP: {{ .Values.kafka.externalAccess.bootstrap.loadBalancerIP }}
+  External Port: {{ .Values.kafka.externalAccess.port }}
 {{- end }}
 
 To check the status of your applications:
   kubectl get applications -n argocd
+  kubectl get kafka -n {{ .Values.namespace }}
+
+To check Kafka cluster status:
+  kubectl get kafka {{ .Values.kafka.clusterName }} -n {{ .Values.namespace }}
+  kubectl describe kafka {{ .Values.kafka.clusterName }} -n {{ .Values.namespace }}
 
 To sync applications manually:
   argocd app sync elasticsearch
   argocd app sync mongodb
-  argocd app sync kafka
+  argocd app sync strimzi-operator
+  argocd app sync kafka-cluster
 
 For more information, visit:
   {{ .Chart.Home }}

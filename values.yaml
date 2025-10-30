@@ -64,39 +64,43 @@ mongo:
       cpu: 1
       memory: 1Gi
 
-# Kafka Configuration
+# Kafka Configuration (using Strimzi Operator)
 kafka:
+  # Kafka cluster name
+  clusterName: "epics-kafka"
+  
+  # Kafka version
+  version: "3.8.0"
+  
   # Number of Kafka broker replicas
-  replicaCount: 1
+  replicaCount: 3
   
-  # Bitnami Kafka chart version (v32+ uses new externalAccess structure)
-  targetRevision: '32.4.3'
+  # Strimzi Operator configuration
+  strimzi:
+    # Strimzi operator Helm chart version
+    operatorVersion: "0.43.0"
+    
+    # Git repository for Kafka CR manifests
+    repoURL: "https://github.com/infn-epics/epik8s-backend.git"
+    targetRevision: "HEAD"
+    
+    # Operator resource limits
+    operatorResources:
+      limits:
+        cpu: 1000m
+        memory: 384Mi
+      requests:
+        cpu: 200m
+        memory: 384Mi
   
-  # Authentication configuration
-  auth:
-    clientProtocol: "plaintext"
-    interBrokerProtocol: "plaintext"
+  # Kafka broker storage
+  storage:
+    type: persistent-claim
+    size: 10Gi
+    deleteClaim: false
+    # storageClass: ""  # Uncomment to specify storage class
   
-  # External access configuration (for Kafka v32+)
-  # IMPORTANT: When enabling external access:
-  # - Set externalAccess.enabled=true
-  # - Provide loadBalancerIPs matching the number of replicas
-  # - Each replica needs its own LoadBalancer IP
-  externalAccess:
-    enabled: false
-    service:
-      type: LoadBalancer
-      # List of IPs for external access (MUST match replicaCount when enabled)
-      # Example for 3 replicas:
-      loadBalancerIPs: []
-      # - 10.10.6.250
-      # - 10.10.6.251
-      # - 10.10.6.252
-      ports:
-        # External port for client connections
-        external: 9094
-  
-  # Resource limits and requests
+  # Kafka broker resources
   resources:
     limits:
       cpu: 2
@@ -104,3 +108,61 @@ kafka:
     requests:
       cpu: 1
       memory: 2Gi
+  
+  # External access configuration
+  externalAccess:
+    enabled: false
+    type: loadbalancer
+    port: 9094
+    # Bootstrap LoadBalancer IP
+    bootstrap:
+      loadBalancerIP: 10.10.6.250
+    # Per-broker LoadBalancer IPs
+    brokers:
+      - broker: 0
+        loadBalancerIP: 10.10.6.250
+      - broker: 1
+        loadBalancerIP: 10.10.6.251
+      - broker: 2
+        loadBalancerIP: 10.10.6.252
+  
+  # Additional Kafka configuration
+  config: {}
+    # log.retention.hours: 168
+    # log.segment.bytes: 1073741824
+  
+  # Zookeeper configuration
+  zookeeper:
+    replicaCount: 3
+    storage:
+      type: persistent-claim
+      size: 5Gi
+      deleteClaim: false
+      # storageClass: ""
+    resources:
+      limits:
+        cpu: 1
+        memory: 2Gi
+      requests:
+        cpu: 500m
+        memory: 1Gi
+  
+  # Entity Operator (Topic and User operators)
+  entityOperator:
+    enabled: true
+    topicOperator:
+      resources:
+        limits:
+          cpu: 500m
+          memory: 512Mi
+        requests:
+          cpu: 200m
+          memory: 512Mi
+    userOperator:
+      resources:
+        limits:
+          cpu: 500m
+          memory: 512Mi
+        requests:
+          cpu: 200m
+          memory: 512Mi

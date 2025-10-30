@@ -1,56 +1,24 @@
+---
+# Strimzi Kafka Operator Installation
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: kafka
+  name: strimzi-operator
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
-    repoURL: 'registry-1.docker.io/bitnamicharts'
-    targetRevision: {{ .Values.kafka.targetRevision | quote }}
-    chart: kafka
+    repoURL: 'https://strimzi.io/charts/'
+    targetRevision: {{ .Values.kafka.strimzi.operatorVersion | default "0.43.0" | quote }}
+    chart: strimzi-kafka-operator
     helm:
       values: |
-        replicaCount: {{ .Values.kafka.replicaCount }}
-        architecture: replicatedKRaft
-        
-        serviceAccount:
-          create: false
-          name: "default"
-        
-        rbac:
-          create: true
-        
-        service:
-          clusterIP: None
-        {{- if .Values.kafka.resources }}
-        
+        watchNamespaces: [{{ .Values.namespace | quote }}]
+        {{- if .Values.kafka.strimzi.operatorResources }}
         resources:
-{{ toYaml .Values.kafka.resources | indent 10 }}
-        {{- end }}
-        
-        auth:
-          enable: false
-          clientProtocol: {{ .Values.kafka.auth.clientProtocol | default "plaintext" }}
-          interBrokerProtocol: {{ .Values.kafka.auth.interBrokerProtocol | default "plaintext" }}
-        {{- if .Values.kafka.externalAccess.enabled }}
-        
-        ## External access configuration for Kafka v32+
-        externalAccess:
-          enabled: true
-          autoDiscovery:
-            enabled: false
-          controller:
-            service:
-              type: {{ .Values.kafka.externalAccess.service.type | default "LoadBalancer" }}
-              {{- if .Values.kafka.externalAccess.service.loadBalancerIPs }}
-              loadBalancerIPs:
-{{ toYaml .Values.kafka.externalAccess.service.loadBalancerIPs | indent 16 }}
-              {{- end }}
-              ports:
-                external: {{ .Values.kafka.externalAccess.service.ports.external | default 9094 }}
+{{ toYaml .Values.kafka.strimzi.operatorResources | indent 10 }}
         {{- end }}
         
   destination:
@@ -63,5 +31,30 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
+---
+# Kafka Cluster Custom Resource
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kafka-cluster
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
+spec:
+  project: default
+  source:
+    repoURL: {{ .Values.kafka.strimzi.repoURL | default "https://github.com/infn-epics/epik8s-backend.git" | quote }}
+    path: kafka-cluster
+    targetRevision: {{ .Values.kafka.strimzi.targetRevision | default "HEAD" | quote }}
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: {{ .Values.namespace | quote }}
   
-
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
