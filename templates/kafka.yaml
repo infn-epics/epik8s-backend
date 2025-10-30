@@ -15,12 +15,13 @@ spec:
     chart: strimzi-kafka-operator
     helm:
       values: |
-        watchNamespaces: [{{ .Values.namespace | quote }}]
-        {{- if .Values.kafka.strimzi.operatorResources }}
+        watchNamespaces:
+          - {{ .Values.namespace | quote }}
+{{- if .Values.kafka.strimzi.operatorResources }}
         resources:
 {{ toYaml .Values.kafka.strimzi.operatorResources | indent 10 }}
-        {{- end }}
-        
+{{- end }}
+  
   destination:
     server: https://kubernetes.default.svc
     namespace: {{ .Values.namespace | quote }}
