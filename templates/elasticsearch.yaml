@@ -34,7 +34,7 @@ spec:
         # (not actually used since security is disabled)
         extraEnvs:
           - name: ELASTIC_PASSWORD
-            value: ""
+            value: "dummynotuser"
         
         # Disable security features completely
         esConfig:
