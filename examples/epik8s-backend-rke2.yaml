@@ -12,8 +12,9 @@ spec:
     helm:
       values: |
           namespace: backend
-          domain: "da"
+          domain: "k8sda.lnf.infn.it"
           kafka:
+            replicaCount: 3
             externalAccess:
               enabled: true
       
