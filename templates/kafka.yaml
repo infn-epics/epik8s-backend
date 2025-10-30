@@ -89,9 +89,13 @@ spec:
           bootstrap:
             loadBalancerIP: {{ .Values.kafka.externalAccess.bootstrap.loadBalancerIP }}
           {{- end }}
-          # Note: In KRaft mode with KafkaNodePool, per-broker IPs are automatically
-          # assigned by MetalLB. Manual broker IP assignment is not supported.
-          # The brokers will get IPs from the MetalLB IP pool automatically.
+          {{- if .Values.kafka.externalAccess.brokers }}
+          brokers:
+          {{- range .Values.kafka.externalAccess.brokers }}
+            - broker: {{ .broker }}
+              loadBalancerIP: {{ .loadBalancerIP }}
+          {{- end }}
+          {{- end }}
       {{- end }}
     
     config:
