@@ -30,14 +30,18 @@ spec:
             tag: {{ .Values.elasticsearch.master.image.tag }}
         data:
           image:
+            registry: {{ .Values.elasticsearch.image.registry | default "docker.io/bitnamilegacy" }}
             repository: {{ .Values.elasticsearch.data.image.repository }}
             tag: {{ .Values.elasticsearch.data.image.tag }}
         metrics:
           image:
+            registry: {{ .Values.elasticsearch.image.registry | default "docker.io/bitnamilegacy" }}
+
             repository: {{ .Values.elasticsearch.metrics.image.repository }}
             tag: {{ .Values.elasticsearch.metrics.image.tag }}
         kibana:
           image:
+            registry: {{ .Values.elasticsearch.image.registry | default "docker.io/bitnamilegacy" }}
             repository: {{ .Values.elasticsearch.kibana.image.repository }}
             tag: {{ .Values.elasticsearch.kibana.image.tag }}
         global:
