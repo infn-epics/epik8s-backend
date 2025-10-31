@@ -21,7 +21,7 @@ spec:
           tag: {{ .Values.mongo.image.tag }}
         volumePermissions:
           image:
-            repository: bitnamilegacy/bitnami-shell
+            repository: bitnamilegacy/os-shell
             tag: "11-debian-11-r27"
           enabled: true
         metrics:
