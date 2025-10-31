@@ -21,7 +21,7 @@ spec:
         volumePermissions:
           image:
             repository: bitnamilegacy/os-shell
-            tag: {{ .Values.mongo.volumePermissions.image.tag | default "11-debian-11-r99" }}
+            tag: {{ .Values.volumePermissions.image.tag | default "11-debian-11-r99" }}
           enabled: true
         master:
           image:

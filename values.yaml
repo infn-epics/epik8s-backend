@@ -3,7 +3,11 @@ openshift: true
 ingressClassName: "nginx"
 domain: apps.okd-datest.lnf.infn.it
 size: 10Gi
-
+volumePermissions:
+    image:
+      repository: bitnamilegacy/os-shell
+      tag: "11-debian-11-r99"
+      
 elasticsearch:
   targetRevision: '21.2.5'
   image:
@@ -45,10 +49,7 @@ mongo:
     image:
       repository: bitnamilegacy/mongodb-exporter
       tag: "0.39.0-debian-11-r0"
-  volumePermissions:
-    image:
-      repository: bitnamilegacy/os-shell
-      tag: "11-debian-11-r99"
+  
   replicaCount: 1
   resources:
     limits:
