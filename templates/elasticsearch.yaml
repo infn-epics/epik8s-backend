@@ -18,6 +18,11 @@ spec:
           tag: {{ .Values.elasticsearch.image.tag }}
         kibanaEnabled: {{.Values.elasticsearch.kibanaEnabled}}
         # Add master, data, metrics, kibana images from values.yaml
+        volumePermissions:
+          image:
+            repository: bitnamilegacy/os-shell
+            tag: {{ .Values.mongo.volumePermissions.image.tag | default "11-debian-11-r99" }}
+          enabled: true
         master:
           image:
             repository: {{ .Values.elasticsearch.master.image.repository }}
