@@ -48,13 +48,8 @@ spec:
             xpack.security.transport.ssl.enabled: false
         
         # Readiness probe - check for yellow status (single node can't be green)
-        readinessProbe:
-          httpGet:
-            path: /_cluster/health?wait_for_status=yellow&timeout=5s
-            port: 9200
-          initialDelaySeconds: 30
-          periodSeconds: 10
-          timeoutSeconds: 5
+        # Override the default probe which checks for green status
+        clusterHealthCheckParams: "wait_for_status=yellow&timeout=5s"
         
         # Resource limits
         {{- if .Values.elasticsearch.resources }}
