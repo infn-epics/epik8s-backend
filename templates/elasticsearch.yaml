@@ -18,6 +18,10 @@ spec:
         # Elasticsearch cluster configuration
         clusterName: "elasticsearch"
         
+        # Use Elasticsearch 8.15.3 image for Lucene 99 compatibility
+        image: "docker.elastic.co/elasticsearch/elasticsearch"
+        imageTag: "8.15.3"
+        
         # Single-node deployment
         replicas: {{ .Values.elasticsearch.replicaCount }}
         minimumMasterNodes: 1
