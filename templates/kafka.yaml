@@ -13,46 +13,15 @@ spec:
     chart: kafka
     helm:
       values: |
-        architecture: standalone
-        zookeeper:
-          enabled: true
-          auth:
-            enabled: false
-          replicaCount: 1
-{{- if .Values.kafka.resources }}
-          resources:
-{{ toYaml .Values.kafka.resources | indent 14 }}
-{{- end }}
-        
-        serviceAccount:
-          create: false
-          name: "default"
-        rbac:
-          create: true
-        
-        
-        service:
-          clusterIP: None
-{{- if .Values.kafka.resources }}
-        resources:
-{{ toYaml .Values.kafka.resources | indent 12 }}
-{{- end }}
-        auth:
-          enable: false
-          clientProtocol: plaintext
-          interBrokerProtocol: plaintext
-      {{- if .Values.kafka.externalAccess }}
-        externalAccess:
-{{ toYaml .Values.kafka.externalAccess | indent 12 }}
-      {{- end }}
-        
+          {{- toYaml .Values.kafka | nindent 10 }}
+  
         
   destination:
     server: https://kubernetes.default.svc
     namespace: {{ .Values.namespace | quote }}
   syncPolicy:
     automated:
-      prune: true
-      selfHeal: true
+      prune: false
+      selfHeal: false
   
 

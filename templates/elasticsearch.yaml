@@ -13,8 +13,29 @@ spec:
     chart: elasticsearch
     helm:
       values: |
+        image:
+          repository: {{ .Values.elasticsearch.image.repository }}
+          tag: {{ .Values.elasticsearch.image.tag }}
+        kibanaEnabled: {{.Values.elasticsearch.kibanaEnabled}}
+        # Add master, data, metrics, kibana images from values.yaml
+        master:
+          image:
+            repository: {{ .Values.elasticsearch.master.image.repository }}
+            tag: {{ .Values.elasticsearch.master.image.tag }}
+        data:
+          image:
+            repository: {{ .Values.elasticsearch.data.image.repository }}
+            tag: {{ .Values.elasticsearch.data.image.tag }}
+        metrics:
+          image:
+            repository: {{ .Values.elasticsearch.metrics.image.repository }}
+            tag: {{ .Values.elasticsearch.metrics.image.tag }}
+        kibana:
+          image:
+            repository: {{ .Values.elasticsearch.kibana.image.repository }}
+            tag: {{ .Values.elasticsearch.kibana.image.tag }}
         global:
-          kibanaEnabled: {{.Values.elasticsearch.kibanaEnabled}}
+            
           {{- if .Values.openshift }}
           compatibility:
             openshift:
