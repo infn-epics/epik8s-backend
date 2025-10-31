@@ -15,7 +15,10 @@ spec:
       values: |
         global:
           security:
+            ## @param global.security.allowInsecureImages Allows skipping image verification
             allowInsecureImages: true
+        clusterName: elasticsearch
+
         image:
           registry: {{ .Values.elasticsearch.image.registry | default "docker.io/bitnamilegacy" }}
           repository: {{ .Values.elasticsearch.image.repository }}
