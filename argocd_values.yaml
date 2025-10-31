@@ -4,7 +4,6 @@ openshift:
 global:
   # -- Default domain used by all components
   ## Used for ingresses, certificates, SSO, notifications, etc.
-  domain: argocd.212.189.145.160.myip.cloud.infn.it # argocd.example.com
 
 
 configs:

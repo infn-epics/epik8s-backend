@@ -14,12 +14,56 @@ spec:
         namespace: backend
         domain: "k8sda.lnf.infn.it"
         
+        # Elasticsearch Configuration
+        elasticsearch:
+          targetRevision: "8.5.1"
+          replicaCount: 1
+          kibanaEnabled: false
+          resources:
+            limits:
+              cpu: 5
+              memory: 4Gi
+            requests:
+              cpu: 1
+              memory: 2Gi
+        
+        # MongoDB Configuration
+        mongo:
+          enabled: true
+          replicaCount: 1
+          storageClassName: "archiver-lts"
+          repoURL: "https://github.com/infn-epics/epik8s-backend.git"
+          targetRevision: "HEAD"
+          auth:
+            enabled: false
+          resources:
+            limits:
+              cpu: 2
+              memory: 2Gi
+            requests:
+              cpu: 1
+              memory: 1Gi
+        
         # Kafka configuration using Strimzi Operator
         kafka:
           clusterName: "epics-kafka"
           version: "4.1.0"
           replicaCount: 3
-          
+          # External access via LoadBalancer
+          externalAccess:
+            enabled: true
+            type: loadbalancer
+            port: 9094
+            bootstrap:
+              loadBalancerIP: 192.168.108.251
+            brokers:
+              - broker: 0
+                loadBalancerIP: 192.168.108.252
+              - broker: 1
+                loadBalancerIP: 192.168.108.253
+              - broker: 2
+                loadBalancerIP: 192.168.108.254
+                
           # Strimzi configuration
           strimzi:
             operatorVersion: "0.48.0"
@@ -41,21 +85,8 @@ spec:
               cpu: 1
               memory: 2Gi
           
-          # External access via LoadBalancer
-          externalAccess:
-            enabled: true
-            type: loadbalancer
-            port: 9094
-            bootstrap:
-              loadBalancerIP: 192.168.108.251
-            
-            brokers:
-              - broker: 0
-                loadBalancerIP: 192.168.108.252
-              - broker: 1
-                loadBalancerIP: 192.168.108.253
-              - broker: 2
-                loadBalancerIP: 192.168.108.254
+          
+  
           
           
           
@@ -85,8 +116,8 @@ spec:
   
   syncPolicy:
     automated:
-      prune: true
-      selfHeal: true
+      prune: false
+      selfHeal: false
     syncOptions:
       - CreateNamespace=true 
       - Prune=true

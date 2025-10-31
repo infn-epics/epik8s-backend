@@ -9,7 +9,7 @@ openshift: false
 ingressClassName: "nginx"
 
 # Base domain for ingress hosts
-domain: apps.okd-datest.lnf.infn.it
+domain: "k8sda.lnf.infn.it" 
 
 # Default persistent volume size
 size: 10Gi
@@ -125,16 +125,9 @@ kafka:
     port: 9094
     # Bootstrap LoadBalancer IP
     bootstrap:
-      loadBalancerIP: 10.10.6.250
     # Per-broker LoadBalancer IPs
     brokers:
-      - broker: 0
-        loadBalancerIP: 10.10.6.250
-      - broker: 1
-        loadBalancerIP: 10.10.6.251
-      - broker: 2
-        loadBalancerIP: 10.10.6.252
-  
+      
   # Additional Kafka configuration
   config: {}
     # log.retention.hours: 168

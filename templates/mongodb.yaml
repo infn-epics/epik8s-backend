@@ -1,30 +1,75 @@
 {{- if .Values.mongo.enabled }}
 ---
-apiVersion: argoproj.io/v1alpha1
-kind: Application
+apiVersion: v1
+kind: Service
 metadata:
   name: mongodb
-  namespace: argocd
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
+  namespace: {{ .Values.namespace }}
 spec:
-  project: default
-  source:
-    # Using this chart's mongodb manifests
-    repoURL: {{ .Values.mongo.repoURL | default "https://github.com/infn-epics/epik8s-backend.git" | quote }}
-    targetRevision: {{ .Values.mongo.targetRevision | default "HEAD" | quote }}
-    path: manifests/mongodb
-  
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: {{ .Values.namespace | quote }}
-  
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
+  ports:
+    - port: 27017
+      targetPort: 27017
+  selector:
+    app: mongodb
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mongodb-data
+  namespace: {{ .Values.namespace }}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: {{ .Values.mongo.storageClassName | default "archiver-lts" }}
+  resources:
+    requests:
+      storage: {{ .Values.size | default "10Gi" }}
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mongodb
+  namespace: {{ .Values.namespace }}
+spec:
+  serviceName: mongodb
+  replicas: {{ .Values.mongo.replicaCount | default 1 }}
+  selector:
+    matchLabels:
+      app: mongodb
+  template:
+    metadata:
+      labels:
+        app: mongodb
+    spec:
+      containers:
+      - name: mongodb
+        image: mongo:7.0
+        ports:
+        - containerPort: 27017
+        volumeMounts:
+        - name: mongodb-data
+          mountPath: /data/db
+        {{- if .Values.mongo.resources }}
+        resources:
+{{ toYaml .Values.mongo.resources | indent 10 }}
+        {{- end }}
+        {{- if .Values.mongo.auth }}
+        {{- if .Values.mongo.auth.enabled }}
+        env:
+        - name: MONGO_INITDB_ROOT_USERNAME
+          value: {{ .Values.mongo.auth.rootUser | default "root" | quote }}
+        - name: MONGO_INITDB_ROOT_PASSWORD
+          value: {{ .Values.mongo.auth.rootPassword | default "changeme" | quote }}
+        {{- if .Values.mongo.auth.database }}
+        - name: MONGO_INITDB_DATABASE
+          value: {{ .Values.mongo.auth.database | quote }}
+        {{- end }}
+        {{- end }}
+        {{- end }}
+      volumes:
+      - name: mongodb-data
+        persistentVolumeClaim:
+          claimName: mongodb-data
 {{- end }}
   
 
