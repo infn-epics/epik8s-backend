@@ -27,7 +27,6 @@ spec:
         sysctlImage:
           registry: {{ .Values.sysctlImage.registry | default "docker.io/bitnamilegacy" }}
           tag: {{ .Values.volumePermissions.image.tag | default "11-debian-11-r99" }}
-          enabled: true
         master:
           image:
             repository: {{ .Values.elasticsearch.master.image.repository }}
