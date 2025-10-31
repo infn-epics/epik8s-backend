@@ -16,16 +16,6 @@ spec:
         image:
           repository: {{ .Values.mongo.image.repository }}
           tag: {{ .Values.mongo.image.tag }}
-        metrics:
-          image:
-            repository: {{ .Values.mongo.metrics.image.repository }}
-            tag: {{ .Values.mongo.metrics.image.tag }}
-        architecture: standalone
-        replicaCount: {{.Values.mongo.replicaCount}}
-        {{- if .Values.mongo.resources }}
-        resources:
-{{ toYaml .Values.mongo.resources | indent 12 }}
-        {{- end }}
         serviceAccount:
           name: "default"
         persistence:
@@ -36,6 +26,18 @@ spec:
             create: false
         auth:
           enabled: false
+        
+        metrics:
+          image:
+            repository: {{ .Values.mongo.metrics.image.repository }}
+            tag: {{ .Values.mongo.metrics.image.tag }}
+        architecture: standalone
+        replicaCount: {{.Values.mongo.replicaCount}}
+        {{- if .Values.mongo.resources }}
+        resources:
+{{ toYaml .Values.mongo.resources | indent 12 }}
+        {{- end }}
+        
         
           
           
