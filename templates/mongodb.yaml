@@ -23,7 +23,7 @@ spec:
   storageClassName: {{ .Values.mongo.storageClassName | default "archiver-lts" }}
   resources:
     requests:
-      storage: {{ .Values.mongo.storage.size | default "10Gi" }}
+      storage: {{ .Values.size | default "10Gi" }}
 ---
 apiVersion: apps/v1
 kind: StatefulSet
