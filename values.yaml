@@ -6,25 +6,25 @@ size: 10Gi
 volumePermissions:
     image:
       repository: os-shell
-      tag: "12-debian-12-r40" #"11-debian-11-r99"
+      tag: "12-debian-12-r43" #"11-debian-11-r99"
 
 elasticsearch:
-  targetRevision: '21.4.9'
+  targetRevision: '21.6.3'
   image:
     repository: elasticsearch
-    tag: "8.17.4-debian-12-r0" #"8.11.0-debian-11-r0"
+    tag: "8.18.0-debian-12-r2" #"8.11.0-debian-11-r0"
   master:
     image:
       repository: elasticsearch
-      tag: "8.17.4-debian-12-r0"
+      tag: "8.18.0-debian-12-r2"
   data:
     image:
       repository: elasticsearch
-      tag: "8.17.4-debian-12-r0"
+      tag: "8.18.0-debian-12-r2"
   metrics:
     image:
       repository: elasticsearch-exporter
-      tag: "1.9.0-debian-12-r2" #"1.5.0-debian-11-r41"
+      tag: "1.9.0-debian-12-r6" #"1.5.0-debian-11-r41"
   kibana:
     image:
       repository: kibana
