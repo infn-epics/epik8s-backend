@@ -1,18 +1,13 @@
 namespace: backend
-
-# Enable OpenShift specific configurations
 openshift: false
-
-# Ingress class name (use "" for OpenShift routes)
 ingressClassName: "nginx"
-
-# Base domain for ingress hosts
-domain: "k8sda.lnf.infn.it" 
-
-# Default persistent volume size
+domain: apps.okd-datest.lnf.infn.it
 size: 10Gi
+volumePermissions:
+    image:
+      repository: os-shell
+      tag: "12-debian-12-r43" #"11-debian-11-r99"
 
-# Elasticsearch Configuration
 elasticsearch:
   # Official Elastic Helm chart version (https://github.com/elastic/helm-charts)
   targetRevision: '8.5.1'
@@ -39,6 +34,34 @@ elasticsearch:
   kibana:
     username: "epics"
     password: "epics"
+
+# MongoDB Configuration
+mongo:
+  # Enable MongoDB deployment
+  enabled: true
+  
+  # Number of MongoDB replicas
+  replicaCount: 1
+  
+  # Bitnami MongoDB chart version (not used with direct deployment)
+  targetRevision: '14.12.3'
+  
+  # Authentication settings
+  auth:
+    enabled: false
+    # Uncomment and set if auth is enabled
+    # rootUser: "root"
+    # rootPassword: "changeme"
+    # database: "olog"
+  
+  # Resource limits and requests
+  resources:
+    limits:
+      cpu: 2
+      memory: 2Gi
+    requests:
+      cpu: 1
+      memory: 1Gi
 
 mongo:
 
