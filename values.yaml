@@ -9,7 +9,7 @@ volumePermissions:
       tag: "11-debian-11-r99"
 
 elasticsearch:
-  targetRevision: '21.2.8'
+  targetRevision: '21.2.5'
   image:
     repository: elasticsearch
     tag: "8.11.0-debian-11-r0"
