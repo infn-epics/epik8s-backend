@@ -75,7 +75,6 @@ spec:
           replicaCount: 0
         security:
           enabled: false
-          # PASSWORD must be the same value passed to elasticsearch to get an "out of the box" experience
           elasticPassword: "epics"
           tls:
             # AutoGenerate TLS certs for elastic

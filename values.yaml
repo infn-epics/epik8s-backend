@@ -72,8 +72,8 @@ kafka:
     replicaCount: 1
   auth:
     enable: false
-    clientProtocol: plaintext
-    interBrokerProtocol: plaintext
+    clientProtocol: "plaintext"
+    interBrokerProtocol: "plaintext"
   image:
     repository: bitnamilegacy/kafka
     tag: "3.6.0-debian-11-r0"
@@ -106,9 +106,7 @@ kafka:
         - 192.168.36.205
       ports:
         external: 9092
-  auth:
-    clientProtocol: ""
-    interBrokerProtocol: ""
+  
   replicaCount: 1
   resources:
     limits:
