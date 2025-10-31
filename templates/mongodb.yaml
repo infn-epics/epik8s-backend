@@ -19,6 +19,15 @@ spec:
         image:
           repository: {{ .Values.mongo.image.repository }}
           tag: {{ .Values.mongo.image.tag }}
+        volumePermissions:
+          image:
+            repository: bitnamilegacy/bitnami-shell
+            tag: "11-debian-11-r27"
+        metrics:
+          image:
+            repository: bitnamilegacy/mongodb-exporter
+            tag: "0.39.0-debian-11-r0"
+
         serviceAccount:
           name: "default"
         persistence:
