@@ -1,36 +1,32 @@
 namespace: backend
-openshift: true
-ingressClassName: "nginx"
-domain: apps.okd-datest.lnf.infn.it
-size: 10Gi
-volumePermissions:
-    image:
-      repository: os-shell
-      tag: "12-debian-12-r43" #"11-debian-11-r99"
 
+# Enable OpenShift specific configurations
+openshift: false
+
+# Ingress class name (use "" for OpenShift routes)
+ingressClassName: "nginx"
+
+# Base domain for ingress hosts
+domain: "k8sda.lnf.infn.it" 
+
+# Default persistent volume size
+size: 10Gi
+
+# Elasticsearch Configuration
 elasticsearch:
-  targetRevision: '21.6.3'
-  image:
-    repository: elasticsearch
-    tag: "8.18.0-debian-12-r2" #"8.11.0-debian-11-r0"
-  master:
-    image:
-      repository: elasticsearch
-      tag: "8.18.0-debian-12-r2"
-  data:
-    image:
-      repository: elasticsearch
-      tag: "8.18.0-debian-12-r2"
-  metrics:
-    image:
-      repository: elasticsearch-exporter
-      tag: "1.9.0-debian-12-r6" #"1.5.0-debian-11-r41"
-  kibana:
-    image:
-      repository: kibana
-      tag: "8.11.0-debian-11-r0"
-  kibanaEnabled: true
+  # Official Elastic Helm chart version (https://github.com/elastic/helm-charts)
+  targetRevision: '8.5.1'
+  
+  # Number of Elasticsearch nodes
   replicaCount: 1
+  
+  # Enable Kibana dashboard
+  kibanaEnabled: false
+  
+  # Kibana chart version (separate from Elasticsearch)
+  kibanaTargetRevision: '8.5.1'
+  
+  # Resource limits and requests
   resources:
     limits:
       cpu: 5
@@ -38,6 +34,11 @@ elasticsearch:
     requests:
       cpu: 1
       memory: 2Gi
+  
+  # Kibana authentication credentials
+  kibana:
+    username: "epics"
+    password: "epics"
 
 mongo:
 
