@@ -14,6 +14,7 @@ spec:
           namespace: backend
           domain: "k8sda.lnf.infn.it"
           kafka:
+            replicaCount: 3
             externalAccess:
               enabled: true
       

@@ -35,33 +35,33 @@ elasticsearch:
     username: "epics"
     password: "epics"
 
-# MongoDB Configuration
-mongo:
-  # Enable MongoDB deployment
-  enabled: true
+# # MongoDB Configuration
+# mongo:
+#   # Enable MongoDB deployment
+#   enabled: true
   
-  # Number of MongoDB replicas
-  replicaCount: 1
+#   # Number of MongoDB replicas
+#   replicaCount: 1
   
-  # Bitnami MongoDB chart version (not used with direct deployment)
-  targetRevision: '14.12.3'
+#   # Bitnami MongoDB chart version (not used with direct deployment)
+#   targetRevision: '14.12.3'
   
-  # Authentication settings
-  auth:
-    enabled: false
-    # Uncomment and set if auth is enabled
-    # rootUser: "root"
-    # rootPassword: "changeme"
-    # database: "olog"
+#   # Authentication settings
+#   auth:
+#     enabled: false
+#     # Uncomment and set if auth is enabled
+#     # rootUser: "root"
+#     # rootPassword: "changeme"
+#     # database: "olog"
   
-  # Resource limits and requests
-  resources:
-    limits:
-      cpu: 2
-      memory: 2Gi
-    requests:
-      cpu: 1
-      memory: 1Gi
+#   # Resource limits and requests
+#   resources:
+#     limits:
+#       cpu: 2
+#       memory: 2Gi
+#     requests:
+#       cpu: 1
+#       memory: 1Gi
 
 mongo:
 
