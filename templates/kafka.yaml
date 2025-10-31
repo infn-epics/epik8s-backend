@@ -28,105 +28,37 @@ spec:
   
   syncPolicy:
     automated:
+      prune: false
+      selfHeal: false
+    syncOptions:
+      - CreateNamespace=true
+---
+# Kafka Cluster Application
+{{- if .Values.kafka.enabled }}
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kafka-cluster
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    # Using this chart's kafka manifests
+    repoURL: {{ .Values.kafka.strimzi.repoURL | default "https://github.com/infn-epics/epik8s-backend.git" | quote }}
+    targetRevision: {{ .Values.kafka.strimzi.targetRevision | default "HEAD" | quote }}
+    path: manifests/kafka
+  
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: {{ .Values.namespace | quote }}
+  
+  syncPolicy:
+    automated:
       prune: true
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
----
-# Kafka Node Pool for KRaft mode
-{{- if .Values.kafka.enabled }}
-apiVersion: kafka.strimzi.io/v1beta2
-kind: KafkaNodePool
-metadata:
-  name: {{ .Values.kafka.clusterName | default "epics-kafka" }}-pool
-  namespace: {{ .Values.namespace }}
-  labels:
-    strimzi.io/cluster: {{ .Values.kafka.clusterName | default "epics-kafka" }}
-  annotations:
-    argocd.argoproj.io/sync-wave: "10"
-spec:
-  replicas: {{ .Values.kafka.replicaCount | default 3 }}
-  roles:
-    - controller
-    - broker
-  storage:
-    type: {{ .Values.kafka.storage.type | default "persistent-claim" }}
-    size: {{ .Values.kafka.storage.size | default "10Gi" }}
-    deleteClaim: {{ .Values.kafka.storage.deleteClaim | default false }}
-    {{- if .Values.kafka.storage.storageClass }}
-    class: {{ .Values.kafka.storage.storageClass }}
-    {{- end }}
-  {{- if .Values.kafka.resources }}
-  resources:
-{{ toYaml .Values.kafka.resources | indent 4 }}
-  {{- end }}
----
-# Kafka Cluster Custom Resource
-apiVersion: kafka.strimzi.io/v1beta2
-kind: Kafka
-metadata:
-  name: {{ .Values.kafka.clusterName | default "epics-kafka" }}
-  namespace: {{ .Values.namespace }}
-  annotations:
-    argocd.argoproj.io/sync-wave: "10"
-spec:
-  kafka:
-    version: {{ .Values.kafka.version | default "4.1.0" }}
-    # Note: replicas now defined in KafkaNodePool resource (above)
-    
-    listeners:
-      - name: plain
-        port: 9092
-        type: internal
-        tls: false
-      {{- if .Values.kafka.externalAccess.enabled }}
-      - name: external
-        port: {{ .Values.kafka.externalAccess.port | default 9094 }}
-        type: {{ .Values.kafka.externalAccess.type | default "loadbalancer" }}
-        tls: false
-        configuration:
-          {{- if .Values.kafka.externalAccess.bootstrap }}
-          bootstrap:
-            loadBalancerIP: {{ .Values.kafka.externalAccess.bootstrap.loadBalancerIP }}
-          {{- end }}
-          {{- if .Values.kafka.externalAccess.brokers }}
-          brokers:
-          {{- range .Values.kafka.externalAccess.brokers }}
-            - broker: {{ .broker }}
-              loadBalancerIP: {{ .loadBalancerIP }}
-          {{- end }}
-          {{- end }}
-      {{- end }}
-    
-    config:
-      offsets.topic.replication.factor: {{ min 3 .Values.kafka.replicaCount }}
-      transaction.state.log.replication.factor: {{ min 3 .Values.kafka.replicaCount }}
-      transaction.state.log.min.isr: {{ min 2 .Values.kafka.replicaCount }}
-      default.replication.factor: {{ min 3 .Values.kafka.replicaCount }}
-      min.insync.replicas: {{ min 2 .Values.kafka.replicaCount }}
-    
-    # Note: storage is now defined in KafkaNodePool resource (above)
-    # Note: resources are now defined in KafkaNodePool resource (above)
-  
-  # Note: ZooKeeper is deprecated since Strimzi 0.46.0 - using KRaft mode instead
-  
-  {{- if .Values.kafka.entityOperator }}
-  {{- if .Values.kafka.entityOperator.enabled }}
-  entityOperator:
-    {{- if .Values.kafka.entityOperator.topicOperator }}
-    topicOperator:
-      {{- if .Values.kafka.entityOperator.topicOperator.resources }}
-      resources:
-{{ toYaml .Values.kafka.entityOperator.topicOperator.resources | indent 8 }}
-      {{- end }}
-    {{- end }}
-    {{- if .Values.kafka.entityOperator.userOperator }}
-    userOperator:
-      {{- if .Values.kafka.entityOperator.userOperator.resources }}
-      resources:
-{{ toYaml .Values.kafka.entityOperator.userOperator.resources | indent 8 }}
-      {{- end }}
-    {{- end }}
-  {{- end }}
-  {{- end }}
 {{- end }}

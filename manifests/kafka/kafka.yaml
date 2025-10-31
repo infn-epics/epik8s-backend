@@ -1,0 +1,84 @@
+---
+# Kafka Node Pool for KRaft mode
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaNodePool
+metadata:
+  name: epics-kafka-pool
+  namespace: backend
+  labels:
+    strimzi.io/cluster: epics-kafka
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
+spec:
+  replicas: 3
+  roles:
+    - controller
+    - broker
+  storage:
+    type: persistent-claim
+    size: 10Gi
+    deleteClaim: false
+  resources:
+    limits:
+      cpu: 2
+      memory: 4Gi
+    requests:
+      cpu: 1
+      memory: 2Gi
+---
+# Kafka Cluster Custom Resource
+apiVersion: kafka.strimzi.io/v1beta2
+kind: Kafka
+metadata:
+  name: epics-kafka
+  namespace: backend
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
+spec:
+  kafka:
+    version: 4.1.0
+    
+    listeners:
+      - name: plain
+        port: 9092
+        type: internal
+        tls: false
+      - name: external
+        port: 9094
+        type: loadbalancer
+        tls: false
+        configuration:
+          bootstrap:
+            loadBalancerIP: 10.10.6.250
+          brokers:
+            - broker: 0
+              loadBalancerIP: 10.10.6.250
+            - broker: 1
+              loadBalancerIP: 10.10.6.251
+            - broker: 2
+              loadBalancerIP: 10.10.6.252
+    
+    config:
+      offsets.topic.replication.factor: 3
+      transaction.state.log.replication.factor: 3
+      transaction.state.log.min.isr: 2
+      default.replication.factor: 3
+      min.insync.replicas: 2
+  
+  entityOperator:
+    topicOperator:
+      resources:
+        limits:
+          cpu: 500m
+          memory: 512Mi
+        requests:
+          cpu: 200m
+          memory: 512Mi
+    userOperator:
+      resources:
+        limits:
+          cpu: 500m
+          memory: 512Mi
+        requests:
+          cpu: 200m
+          memory: 512Mi
