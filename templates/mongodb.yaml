@@ -23,6 +23,7 @@ spec:
           image:
             repository: bitnamilegacy/bitnami-shell
             tag: "11-debian-11-r27"
+          enabled: true
         metrics:
           image:
             repository: bitnamilegacy/mongodb-exporter
