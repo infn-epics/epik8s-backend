@@ -37,10 +37,10 @@ elasticsearch:
 
 mongo:
 
-  targetRevision: '14.12.3'
+  targetRevision: '15.6.26' # '14.12.3'
   image:
     repository: bitnamilegacy/mongodb
-    tag: "7.0.5-debian-11-r1"
+    tag: "7.0.14-debian-12-r8" #"7.0.5-debian-11-r1"
   metrics:
     image:
       repository: bitnamilegacy/mongodb-exporter
