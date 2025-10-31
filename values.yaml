@@ -47,7 +47,7 @@ mongo:
       tag: "0.39.0-debian-11-r0"
   volumePermissions:
     image:
-      repository: bitnamilegacy/bitnami-shell
+      repository: bitnamilegacy/os-shell
       tag: "11-debian-11-r27"
   replicaCount: 1
   resources:
@@ -97,7 +97,7 @@ kafka:
         tag: "0.20.0-debian-11-r0"
   volumePermissions:
     image:
-      repository: bitnamilegacy/bitnami-shell
+      repository: bitnamilegacy/os-shell
       tag: "11-debian-11-r27"
   externalAccess:
     enabled: true
