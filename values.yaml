@@ -59,6 +59,21 @@ mongo:
 
 kafka:
   targetRevision: '20.1.1'
+  architecture: standalone
+  serviceAccount:
+    create: false
+    name: "default"
+  rbac:
+    create: true
+  zookeeper:
+    enabled: true
+    auth:
+      enabled: false
+    replicaCount: 1
+  auth:
+    enable: false
+    clientProtocol: plaintext
+    interBrokerProtocol: plaintext
   image:
     repository: bitnamilegacy/kafka
     tag: "3.6.0-debian-11-r0"
