@@ -48,7 +48,7 @@ mongo:
   volumePermissions:
     image:
       repository: bitnamilegacy/os-shell
-      tag: "11-debian-11-r27"
+      tag: "11-debian-11-r99"
   replicaCount: 1
   resources:
     limits:
@@ -98,7 +98,7 @@ kafka:
   volumePermissions:
     image:
       repository: bitnamilegacy/os-shell
-      tag: "11-debian-11-r27"
+      tag: "11-debian-11-r99"
   externalAccess:
     enabled: true
     service:
