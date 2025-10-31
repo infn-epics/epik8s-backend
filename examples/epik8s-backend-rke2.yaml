@@ -8,11 +8,11 @@ spec:
   source:
     repoURL: 'https://github.com/infn-epics/epik8s-backend.git'
     path: .
-    targetRevision: HEAD
+    targetRevision: bitnamilegacy
     helm:
       values: |
           namespace: backend
-          domain: "da"
+          domain: "k8sda.lnf.infn.it"
           kafka:
             externalAccess:
               enabled: true
@@ -20,7 +20,7 @@ spec:
               service:
                 type: LoadBalancer
                 loadBalancerIPs:
-                    - 10.10.6.250
+                    - 192.168.108.251
                 ports:
                   external: 9092
   destination:
