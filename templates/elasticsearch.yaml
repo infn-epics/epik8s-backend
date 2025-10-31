@@ -14,13 +14,14 @@ spec:
     helm:
       values: |
         image:
+          registry: {{ .Values.elasticsearch.image.registry | default "docker.io/bitnamilegacy" }}
           repository: {{ .Values.elasticsearch.image.repository }}
           tag: {{ .Values.elasticsearch.image.tag }}
         kibanaEnabled: {{.Values.elasticsearch.kibanaEnabled}}
         # Add master, data, metrics, kibana images from values.yaml
         volumePermissions:
           image:
-            repository: bitnamilegacy/os-shell
+            registry: {{ .Values.volumePermissions.image.registry | default "docker.io/bitnamilegacy" }}
             tag: {{ .Values.volumePermissions.image.tag | default "11-debian-11-r99" }}
           enabled: true
         master:
