@@ -5,29 +5,29 @@ domain: apps.okd-datest.lnf.infn.it
 size: 10Gi
 volumePermissions:
     image:
-      repository: bitnamilegacy/os-shell
+      repository: os-shell
       tag: "11-debian-11-r99"
 
 elasticsearch:
   targetRevision: '21.2.8'
   image:
-    repository: bitnamilegacy/elasticsearch
+    repository: elasticsearch
     tag: "8.11.0-debian-11-r0"
   master:
     image:
-      repository: bitnamilegacy/elasticsearch
+      repository: elasticsearch
       tag: "8.11.0-debian-11-r0"
   data:
     image:
-      repository: bitnamilegacy/elasticsearch
+      repository: elasticsearch
       tag: "8.11.0-debian-11-r0"
   metrics:
     image:
-      repository: bitnamilegacy/elasticsearch-exporter
+      repository: elasticsearch-exporter
       tag: "1.5.0-debian-11-r41"
   kibana:
     image:
-      repository: bitnamilegacy/kibana
+      repository: kibana
       tag: "8.11.0-debian-11-r0"
   kibanaEnabled: true
   replicaCount: 1
