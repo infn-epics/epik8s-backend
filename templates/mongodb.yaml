@@ -13,6 +13,9 @@ spec:
     chart: mongodb
     helm:
       values: |
+        global:
+          storageClass: {{ .Values.mongo.storageClassName | default "archiver-lts" }}
+          
         image:
           repository: {{ .Values.mongo.image.repository }}
           tag: {{ .Values.mongo.image.tag }}
@@ -21,9 +24,7 @@ spec:
         persistence:
           enabled: true
           size: {{ .Values.mongo.size | default "10Gi" }}
-          storageClass: 
-            name: {{ .Values.mongo.storageClassName | default "archiver-lts" }}
-            create: false
+          
         auth:
           enabled: false
         
