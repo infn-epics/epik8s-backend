@@ -6,50 +6,99 @@ size: 10Gi
 
 elasticsearch:
   targetRevision: '21.2.5'
-  replicaCount: 1
+  image:
+    repository: bitnamilegacy/elasticsearch
+    tag: "8.11.0-debian-11-r0"
+  master:
+    image:
+      repository: bitnamilegacy/elasticsearch
+      tag: "8.11.0-debian-11-r0"
+  data:
+    image:
+      repository: bitnamilegacy/elasticsearch
+      tag: "8.11.0-debian-11-r0"
+  metrics:
+    image:
+      repository: bitnamilegacy/elasticsearch-exporter
+      tag: "1.5.0-debian-11-r41"
+  kibana:
+    image:
+      repository: bitnamilegacy/kibana
+      tag: "8.11.0-debian-11-r0"
   kibanaEnabled: true
+  replicaCount: 1
   resources:
-      limits:
-        cpu: 5
-        memory: 4Gi
-      requests:
-        cpu: 1
-        memory: 2Gi
+    limits:
+      cpu: 5
+      memory: 4Gi
+    requests:
+      cpu: 1
+      memory: 2Gi
 
 mongo:
-  replicaCount: 1
   targetRevision: '14.12.3'
-  
+  image:
+    repository: bitnamilegacy/mongodb
+    tag: "7.0.5-debian-11-r1"
+  metrics:
+    image:
+      repository: bitnamilegacy/mongodb-exporter
+      tag: "0.39.0-debian-11-r0"
+  volumePermissions:
+    image:
+      repository: bitnamilegacy/bitnami-shell
+      tag: "11-debian-11-r27"
+  replicaCount: 1
   resources:
-      limits:
-        cpu: 2
-        memory: 2Gi
-      requests:
-        cpu: 1
-        memory: 1Gi
+    limits:
+      cpu: 2
+      memory: 2Gi
+    requests:
+      cpu: 1
+      memory: 1Gi
 
 kafka:
-  replicaCount: 1
   targetRevision: '20.1.1'
-  auth:
-    clientProtocol: ""
-    interBrokerProtocol: ""
-  
-  
+  image:
+    repository: bitnamilegacy/kafka
+    tag: "3.6.0-debian-11-r0"
+  metrics:
+    kafka:
+      image:
+        repository: bitnamilegacy/jmx-exporter
+        tag: "0.20.0-debian-11-r0"
+    zookeeper:
+      image:
+        repository: bitnamilegacy/jmx-exporter
+        tag: "0.20.0-debian-11-r0"
+  zookeeper:
+    image:
+      repository: bitnamilegacy/zookeeper
+      tag: "3.9.1-debian-11-r0"
+    metrics:
+      image:
+        repository: bitnamilegacy/jmx-exporter
+        tag: "0.20.0-debian-11-r0"
+  volumePermissions:
+    image:
+      repository: bitnamilegacy/bitnami-shell
+      tag: "11-debian-11-r27"
   externalAccess:
     enabled: true
-    
     service:
       type: LoadBalancer
       loadBalancerIPs:
-          - 192.168.36.205
+        - 192.168.36.205
       ports:
         external: 9092
-      
+  auth:
+    clientProtocol: ""
+    interBrokerProtocol: ""
+  replicaCount: 1
   resources:
-      limits:
-        cpu: 2
-        memory: 4Gi
-      requests:
-        cpu: 1
-        memory: 2Gi
+    limits:
+      cpu: 2
+      memory: 4Gi
+    requests:
+      cpu: 1
+      memory: 2Gi
