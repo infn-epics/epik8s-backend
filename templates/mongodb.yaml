@@ -33,6 +33,7 @@ spec:
         persistence:
           enabled: true
           size: {{ .Values.mongo.size | default "10Gi" }}
+          storageClass: {{ .Values.mongo.storageClassName | default "archiver-lts" }}
           
         auth:
           enabled: false
