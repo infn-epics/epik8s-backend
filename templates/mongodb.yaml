@@ -27,6 +27,7 @@ spec:
 {{ toYaml .Values.mongo.resources | indent 12 }}
         {{- end }}
         serviceAccount:
+          name: "default"
         persistence:
           enabled: true
           size: {{ .Values.mongo.size | default "10Gi" }}
