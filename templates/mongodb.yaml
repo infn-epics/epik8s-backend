@@ -12,12 +12,26 @@ spec:
   selector:
     app: mongodb
 ---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mongodb-data
+  namespace: {{ .Values.namespace }}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: {{ .Values.mongo.storageClassName | default "archiver-lts" }}
+  resources:
+    requests:
+      storage: {{ .Values.mongo.storage.size | default "10Gi" }}
+---
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: mongodb
   namespace: {{ .Values.namespace }}
 spec:
+  serviceName: mongodb
   replicas: {{ .Values.mongo.replicaCount | default 1 }}
   selector:
     matchLabels:
@@ -52,7 +66,8 @@ spec:
         {{- end }}
       volumes:
       - name: mongodb-data
-        emptyDir: {}
+        persistentVolumeClaim:
+          claimName: mongodb-data
 {{- end }}
   
 
