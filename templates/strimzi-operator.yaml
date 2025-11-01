@@ -15,7 +15,6 @@ spec:
       values: |
         watchNamespaces:
           - {{ .Values.namespace }}
-        featureGates: "+UseKRaft,+KafkaNodePools"
         
   destination:
     server: https://kubernetes.default.svc
