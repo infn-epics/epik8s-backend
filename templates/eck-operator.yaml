@@ -22,7 +22,8 @@ spec:
         # Resource limits
         {{- if .Values.elasticsearch.resources }}
         resources:
-        {{ toYaml .Values.elasticsearch.resources | indent 12 }}
+        
+{{ toYaml .Values.elasticsearch.resources | indent 12 }}
         {{- end }}
         # Pod configuration
         podAnnotations: {}
