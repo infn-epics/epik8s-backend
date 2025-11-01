@@ -7,7 +7,7 @@ metadata:
   labels:
     strimzi.io/cluster: {{ .Values.kafka.clusterName | default "kafka-cluster" }}
 spec:
-  replicas: {{ .Values.kafka.controllerReplicas   | default 3 }}
+  replicas: {{ .Values.kafka.replicaCount   | default 3 }}
   roles:
     - controller
   storage:
@@ -27,7 +27,7 @@ metadata:
   labels:
     strimzi.io/cluster: {{ .Values.kafka.clusterName | default "kafka-cluster" }}
 spec:
-  replicas: {{ .Values.kafka.brokerReplicas | default 3 }}
+  replicas: {{ .Values.kafka.replicaCount   | default 3 }}
   roles:
     - broker
   storage:
@@ -44,8 +44,8 @@ metadata:
   name: {{ .Values.kafka.clusterName | default "kafka-cluster" }}
 spec:
   kafka:
-    version: 4.1.0
-    metadataVersion: 4.1-IV1
+    version: {{ .Values.kafka.version | default "4.1.0" }}
+    metadataVersion: {{ .Values.kafka.metadataVersion | default "4.1-IV1" }}
     listeners:
       - name: plain
         port: {{ .Values.kafka.listeners.plain.port | default 9092 }}
