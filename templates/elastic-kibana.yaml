@@ -34,8 +34,8 @@ spec:
         - ReadWriteOnce
         resources:
           requests:
-            storage: 50Gi
-        storageClassName: standard
+            storage: {{ .Values.elasticsearch.storage.size | default "20Gi" }}
+        storageClassName: {{ .Values.elasticsearch.storage.classname | default "" }}
 
 ---
 # Kibana
