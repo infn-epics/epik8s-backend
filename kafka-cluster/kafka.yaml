@@ -19,15 +19,15 @@ spec:
         type: {{ .Values.kafka.externalAccess.type | default "loadbalancer" }}
         tls: false
         configuration:
-          {{- if .Values.kafka.externalAccess.bootstrap }}
+{{- if .Values.kafka.externalAccess.bootstrap }}
           bootstrap:
-{{ toYaml .Values.kafka.externalAccess.bootstrap | indent 12 }}
+{{- toYaml .Values.kafka.externalAccess.bootstrap | indent 12 }}
           {{- end }}
-          {{- if .Values.kafka.externalAccess.brokers }}
+{{- if .Values.kafka.externalAccess.brokers }}
           brokers:
-{{ toYaml .Values.kafka.externalAccess.brokers | indent 12 }}
-          {{- end }}
-      {{- end }}
+{{- toYaml .Values.kafka.externalAccess.brokers | indent 12 }}
+{{- end }}
+{{- end }}
     
     config:
       offsets.topic.replication.factor: {{ .Values.kafka.replicaCount | default 3 }}
