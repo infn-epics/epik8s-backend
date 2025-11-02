@@ -37,6 +37,7 @@ spec:
             storage: {{ .Values.elasticsearch.storage.size | default "20Gi" }}
         storageClassName: "local-path"
 
+{{- if .Values.elasticsearch.kibana.enabled }}
 ---
 # Kibana
 apiVersion: kibana.k8s.elastic.co/v1
@@ -45,7 +46,7 @@ metadata:
   name: kibana
   namespace: {{ .Values.namespace }}
 spec:
-  version: 8.15.0
+  version: {{ .Values.elasticsearch.kibana.version | default "9.2.0" }}
   count: 1
   elasticsearchRef:
     name: elasticsearch
@@ -105,3 +106,5 @@ spec:
   - hosts:
     - kibana.{{.Values.domain}} # Change to your domain
     secretName: kibana-tls  # ECK will create this automatically
+
+{{- end }}
