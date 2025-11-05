@@ -14,11 +14,14 @@ domain: "k8sda.lnf.infn.it"
 # Default persistent volume size
 size: 10Gi
 
+
 # Elasticsearch Configuration
 elasticsearch:
   # Official Elastic Helm chart version (https://github.com/elastic/helm-charts)
   targetRevision: '8.5.1'
-  
+  storage:
+      size: 10Gi
+      classname: ""
   # Number of Elasticsearch nodes
   replicaCount: 1
   
