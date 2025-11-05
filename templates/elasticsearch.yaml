@@ -123,6 +123,7 @@ spec:
         # Persistence
         volumeClaimTemplate:
           accessModes: [ "ReadWriteOnce" ]
+          storageClassName: "archiver-lts"
           resources:
             requests:
               storage: {{ .Values.size | quote }}

@@ -14,7 +14,7 @@ spec:
           namespace: backend
           domain: "apps.okd-datest.lnf.infn.it"
           openshift: true
-          size: 50Gi
+          size: 5Gi
           mongo:
             enabled: true
             replicaCount: 1
@@ -29,7 +29,7 @@ spec:
                 cpu: 1
                 memory: 1Gi
           kafka:
-            replicaCount: 3
+            replicaCount: 1
             externalAccess:
               enabled: true
       
@@ -37,8 +37,7 @@ spec:
                 type: LoadBalancer
                 loadBalancerIPs:
                     - 192.168.36.251
-                    - 192.168.36.252
-                    - 192.168.36.253
+                   
                 ports:
                   external: 9092
       
@@ -47,8 +46,8 @@ spec:
     namespace: backend
   syncPolicy:
     automated:
-      prune: true  # Optional: Automatically remove resources not specified in Helm chart
-      selfHeal: true
+      prune: false  # Optional: Automatically remove resources not specified in Helm chart
+      selfHeal: false
     syncOptions:
       - CreateNamespace=true 
       - Prune=true
