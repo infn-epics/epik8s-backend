@@ -8,19 +8,27 @@ spec:
   source:
     repoURL: 'https://baltig.infn.it/epics-containers/epik8-backend.git'
     path: .
-    targetRevision: HEAD
+    targetRevision: bitnamilegacy
     helm:
-      parameters:
-        - name: ingressClassName
-          value: "" ## no define otherwise does not create route
-        - name: namespace
-          value: backend
-        - name: domain
-          value: "apps.okd-datest.lnf.infn.it"
-        - name: openshift
-          value: "true" 
-        - name: size
-          value: 50Gi
+      values: |
+          namespace: backend
+          domain: "apps.okd-datest.lnf.infn.it"
+          openshift: true
+          size: 50Gi
+          kafka:
+            replicaCount: 3
+            externalAccess:
+              enabled: true
+      
+              service:
+                type: LoadBalancer
+                loadBalancerIPs:
+                    - 192.168.36.251
+                    - 192.168.36.252
+                    - 192.168.36.253
+                ports:
+                  external: 9092
+      
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: backend
