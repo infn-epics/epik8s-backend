@@ -74,7 +74,11 @@ mongo:
 kafka:
   # Enable Kafka deployment
   enabled: true
-  
+  listeners:
+      tls:
+        port: 9093
+      plain:
+        port: 9092
   # Kafka cluster name
   clusterName: "epics-kafka"
   
