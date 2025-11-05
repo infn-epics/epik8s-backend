@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: 'https://baltig.infn.it/epics-containers/epik8-backend.git'
+    repoURL: 'https://github.com/infn-epics/epik8s-backend.git'
     path: .
     targetRevision: bitnamilegacy
     helm:
@@ -15,6 +15,19 @@ spec:
           domain: "apps.okd-datest.lnf.infn.it"
           openshift: true
           size: 50Gi
+          mongo:
+            enabled: true
+            replicaCount: 1
+            storageClassName: "archiver-lts"
+            auth:
+              enabled: false
+            resources:
+              limits:
+                cpu: 2
+                memory: 2Gi
+              requests:
+                cpu: 1
+                memory: 1Gi
           kafka:
             replicaCount: 3
             externalAccess:
