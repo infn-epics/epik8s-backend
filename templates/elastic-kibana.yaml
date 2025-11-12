@@ -37,7 +37,9 @@ spec:
         resources:
           requests:
             storage: {{ .Values.elasticsearch.storage.size | default "20Gi" }}
-        storageClassName: "local-path"
+        {{- if .Values.elasticsearch.storage.className }}
+        storageClassName: {{ .Values.elasticsearch.storage.className | default "local-path" }}
+        {{- end }}
 
 {{- if .Values.elasticsearch.kibana.enabled }}
 ---
