@@ -94,7 +94,9 @@ metadata:
     # Optional: Add custom annotations
     # cert-manager.io/cluster-issuer: "letsencrypt-prod"
 spec:
-  ingressClassName: nginx  # Change to your ingress class (nginx, traefik, etc.)
+  {{- if .Values.ingressClassName }}
+  ingressClassName: {{ .Values.ingressClassName }}
+  {{- end }}
   rules:
   - host: kibana.{{.Values.domain}}  # Change to your domain
     http:
