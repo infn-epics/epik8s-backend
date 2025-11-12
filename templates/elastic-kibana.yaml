@@ -5,6 +5,8 @@ kind: Elasticsearch
 metadata:
   name: elasticsearch
   namespace: {{ .Values.namespace }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
 spec:
   version: {{ .Values.elasticsearch.version | default "9.2.0" }}
   nodeSets:

@@ -5,6 +5,8 @@ kind: Service
 metadata:
   name: mongodb
   namespace: {{ .Values.namespace }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
 spec:
   ports:
     - port: 27017
@@ -17,6 +19,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: mongodb-data
   namespace: {{ .Values.namespace }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
 spec:
   accessModes:
     - ReadWriteOnce
@@ -30,6 +34,8 @@ kind: StatefulSet
 metadata:
   name: mongodb
   namespace: {{ .Values.namespace }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
 spec:
   serviceName: mongodb
   replicas: {{ .Values.mongo.replicaCount | default 1 }}

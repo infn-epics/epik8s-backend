@@ -5,6 +5,8 @@ metadata:
   namespace: {{ .Values.namespace }}
   labels:
     strimzi.io/cluster: {{ .Values.kafka.clusterName | default "kafka-cluster" }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
 spec:
   replicas: {{ .Values.kafka.replicaCount   | default 3 }}
   roles:
